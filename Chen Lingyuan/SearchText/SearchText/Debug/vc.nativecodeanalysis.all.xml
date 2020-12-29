@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
+    <SFA>
+      <FILEPATH>d:\实习记录\searchtext\searchtext</FILEPATH>
+      <FILENAME>kblockmatch.cpp</FILENAME>
+      <LINE>12</LINE>
+      <COLUMN>13</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'KBlockMatch::m_pszReadText' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>KBlockMatch::{ctor}</FUNCTION>
+    <DECORATED>??0KBlockMatch@@QAE@XZ</DECORATED>
+    <FUNCLINE>12</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>d:\实习记录\searchtext\searchtext</FILEPATH>
+      <FILENAME>kblockmatch.cpp</FILENAME>
+      <LINE>204</LINE>
+      <COLUMN>52</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '-' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '-' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>KBlockMatch::MatchWords</FUNCTION>
+    <DECORATED>?MatchWords@KBlockMatch@@QAE_NPAEPAD1@Z</DECORATED>
+    <FUNCLINE>125</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>d:\实习记录\searchtext\searchtext</FILEPATH>
+      <FILENAME>ksunday.cpp</FILENAME>
+      <LINE>8</LINE>
+      <COLUMN>9</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'KSunday::m_nBadChar' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>KSunday::{ctor}</FUNCTION>
+    <DECORATED>??0KSunday@@QAE@XZ</DECORATED>
+    <FUNCLINE>8</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>d:\实习记录\searchtext\searchtext</FILEPATH>
+      <FILENAME>kkmp.cpp</FILENAME>
+      <LINE>9</LINE>
+      <COLUMN>6</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'KKmp::m_nNext' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>KKmp::{ctor}</FUNCTION>
+    <DECORATED>??0KKmp@@QAE@XZ</DECORATED>
+    <FUNCLINE>9</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT></DEFECTS>

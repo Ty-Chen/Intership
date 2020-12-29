@@ -1,0 +1,475 @@
+Pattern : DEBUG
+File Name is TestText\Big_Size.txt 
+File Size is 1228784674 Bytes
+Match Count: 704424, Match Time 1577 ms, Process Memory 32 MB
+
+File Name is TestText\Chinese_Character.txt   
+File Size is 406 Bytes
+Match Count: 3, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Empty_Text.txt   
+File Size is 0 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Middle_Size.txt
+File Size is 168452369 Bytes
+Match Count: 20436, Match Time 130 ms, Process Memory 30 MB
+
+File Name is TestText\More_KeyWords.txt
+File Size is 28 Bytes
+Match Count: 1, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\OneLine_Text.txt
+File Size is 4 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Ordinary_Text.txt
+File Size is 2703160 Bytes
+Match Count: 28619, Match Time 22 ms, Process Memory 30 MB
+
+File Name is TestText\中文路径.txt
+File Size is 2703160 Bytes
+Match Count: 28619, Match Time 22 ms, Process Memory 30 MB
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
+Pattern : /n/tGBK             
+File Name is TestText\Big_Size.txt 
+
+File Name is TestText\Chinese_Character.txt   
+
+File Name is TestText\Empty_Text.txt   
+
+File Name is TestText\Middle_Size.txt
+
+File Name is TestText\More_KeyWords.txt
+
+File Name is TestText\OneLine_Text.txt
+
+File Name is TestText\Ordinary_Text.txt
+
+File Name is TestText\中文路径.txt
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
+Pattern :             
+File Name is TestText\Big_Size.txt 
+File Size is 1228784674 Bytes
+Match Count: 0, Match Time 304 ms, Process Memory 30 MB
+
+File Name is TestText\Chinese_Character.txt   
+File Size is 406 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Empty_Text.txt   
+File Size is 0 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Middle_Size.txt
+File Size is 168452369 Bytes
+Match Count: 0, Match Time 39 ms, Process Memory 30 MB
+
+File Name is TestText\More_KeyWords.txt
+File Size is 28 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\OneLine_Text.txt
+File Size is 4 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Ordinary_Text.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\中文路径.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
+Pattern : alsdaklaldkladklad mskadl;kadl;adkladl;adls';al;'dlqwld,a.,d./ad,akdlkladkl;adka.zc,z.,c./,zclas;dl;'adad'adl./zxc./Zsalkl;k;laskd;lkauequwueoqiualsdaklaldkladklad mskadl;kadl;adkladl;adls';al;'dlqwld,a.,d./ad,akdlkladkl;adka.zc,z.,c./,zclas;dl;'adad'adl./zxc./Zsalkl;k;laskd;lkauequwueoqiualsdaklaldkladklad mskadl;kadl;adkladl;adls';al;'dlqwld,a.,d./ad,akdlkladkl;adka.zc,z.,c./,zclas;dl;'adad'adl./zxc./Zsalkl;k;laskd;lkauequwueoqiu
+Pattern is too Large
+
+Pattern : 可口可乐
+File Name is TestText\Big_Size.txt 
+File Size is 1228784674 Bytes
+Match Count: 0, Match Time 305 ms, Process Memory 30 MB
+
+File Name is TestText\Chinese_Character.txt   
+File Size is 406 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Empty_Text.txt   
+File Size is 0 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Middle_Size.txt
+File Size is 168452369 Bytes
+Match Count: 0, Match Time 45 ms, Process Memory 30 MB
+
+File Name is TestText\More_KeyWords.txt
+File Size is 28 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\OneLine_Text.txt
+File Size is 4 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Ordinary_Text.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\中文路径.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 2 ms, Process Memory 30 MB
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
+Pattern : 天策
+File Name is TestText\Big_Size.txt 
+File Size is 1228784674 Bytes
+Match Count: 5356544, Match Time 4578 ms, Process Memory 50 MB
+
+File Name is TestText\Chinese_Character.txt   
+File Size is 406 Bytes
+Match Count: 4, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Empty_Text.txt   
+File Size is 0 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Middle_Size.txt
+File Size is 168452369 Bytes
+Match Count: 0, Match Time 45 ms, Process Memory 30 MB
+
+File Name is TestText\More_KeyWords.txt
+File Size is 28 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\OneLine_Text.txt
+File Size is 4 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Ordinary_Text.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 2 ms, Process Memory 30 MB
+
+File Name is TestText\中文路径.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 2 ms, Process Memory 30 MB
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
+Pattern : g
+File Name is TestText\Big_Size.txt 
+File Size is 1228784674 Bytes
+Match Count: 2897564, Match Time 4585 ms, Process Memory 41 MB
+
+File Name is TestText\Chinese_Character.txt   
+File Size is 406 Bytes
+Match Count: 3, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Empty_Text.txt   
+File Size is 0 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Middle_Size.txt
+File Size is 168452369 Bytes
+Match Count: 1021390, Match Time 1284 ms, Process Memory 34 MB
+
+File Name is TestText\More_KeyWords.txt
+File Size is 28 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\OneLine_Text.txt
+File Size is 4 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Ordinary_Text.txt
+File Size is 2703160 Bytes
+Match Count: 28478, Match Time 21 ms, Process Memory 30 MB
+
+File Name is TestText\中文路径.txt
+File Size is 2703160 Bytes
+Match Count: 28478, Match Time 21 ms, Process Memory 30 MB
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
+Pattern : GG
+File Name is TestText\Big_Size.txt 
+File Size is 1228784674 Bytes
+Match Count: 0, Match Time 743 ms, Process Memory 30 MB
+
+File Name is TestText\Chinese_Character.txt   
+File Size is 406 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Empty_Text.txt   
+File Size is 0 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Middle_Size.txt
+File Size is 168452369 Bytes
+Match Count: 0, Match Time 79 ms, Process Memory 30 MB
+
+File Name is TestText\More_KeyWords.txt
+File Size is 28 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\OneLine_Text.txt
+File Size is 4 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Ordinary_Text.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 2 ms, Process Memory 30 MB
+
+File Name is TestText\中文路径.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 3 ms, Process Memory 30 MB
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
+Pattern : 21
+File Name is TestText\Big_Size.txt 
+File Size is 1228784674 Bytes
+Match Count: 3352858, Match Time 4617 ms, Process Memory 43 MB
+
+File Name is TestText\Chinese_Character.txt   
+File Size is 406 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Empty_Text.txt   
+File Size is 0 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Middle_Size.txt
+File Size is 168452369 Bytes
+Match Count: 1027469, Match Time 1361 ms, Process Memory 34 MB
+
+File Name is TestText\More_KeyWords.txt
+File Size is 28 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\OneLine_Text.txt
+File Size is 4 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Ordinary_Text.txt
+File Size is 2703160 Bytes
+Match Count: 5805, Match Time 8 ms, Process Memory 30 MB
+
+File Name is TestText\中文路径.txt
+File Size is 2703160 Bytes
+Match Count: 5805, Match Time 8 ms, Process Memory 30 MB
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
+Pattern : @@!s%%$$++
+File Name is TestText\Big_Size.txt 
+File Size is 1228784674 Bytes
+Match Count: 0, Match Time 302 ms, Process Memory 30 MB
+
+File Name is TestText\Chinese_Character.txt   
+File Size is 406 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Empty_Text.txt   
+File Size is 0 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Middle_Size.txt
+File Size is 168452369 Bytes
+Match Count: 0, Match Time 44 ms, Process Memory 30 MB
+
+File Name is TestText\More_KeyWords.txt
+File Size is 28 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\OneLine_Text.txt
+File Size is 4 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Ordinary_Text.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\中文路径.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 2 ms, Process Memory 30 MB
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
+Pattern : 2020++abcd!!!
+File Name is TestText\Big_Size.txt 
+File Size is 1228784674 Bytes
+Match Count: 0, Match Time 311 ms, Process Memory 30 MB
+
+File Name is TestText\Chinese_Character.txt   
+File Size is 406 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Empty_Text.txt   
+File Size is 0 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Middle_Size.txt
+File Size is 168452369 Bytes
+Match Count: 0, Match Time 42 ms, Process Memory 30 MB
+
+File Name is TestText\More_KeyWords.txt
+File Size is 28 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\OneLine_Text.txt
+File Size is 4 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Ordinary_Text.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\中文路径.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 2 ms, Process Memory 30 MB
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
+Pattern : \0s\r\nss
+File Name is TestText\Big_Size.txt 
+
+File Name is TestText\Chinese_Character.txt   
+
+File Name is TestText\Empty_Text.txt   
+
+File Name is TestText\Middle_Size.txt
+
+File Name is TestText\More_KeyWords.txt
+
+File Name is TestText\OneLine_Text.txt
+
+File Name is TestText\Ordinary_Text.txt
+
+File Name is TestText\中文路径.txt
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
+Pattern : WARN   KGLOG
+File Name is TestText\Big_Size.txt 
+File Size is 1228784674 Bytes
+Match Count: 0, Match Time 298 ms, Process Memory 30 MB
+
+File Name is TestText\Chinese_Character.txt   
+File Size is 406 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Empty_Text.txt   
+File Size is 0 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Middle_Size.txt
+File Size is 168452369 Bytes
+Match Count: 0, Match Time 42 ms, Process Memory 30 MB
+
+File Name is TestText\More_KeyWords.txt
+File Size is 28 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\OneLine_Text.txt
+File Size is 4 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Ordinary_Text.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\中文路径.txt
+File Size is 2703160 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
+Pattern : KGLOG_PROCESS
+File Name is TestText\Big_Size.txt 
+File Size is 1228784674 Bytes
+Match Count: 302160, Match Time 1081 ms, Process Memory 31 MB
+
+File Name is TestText\Chinese_Character.txt   
+File Size is 406 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Empty_Text.txt   
+File Size is 0 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Middle_Size.txt
+File Size is 168452369 Bytes
+Match Count: 25256, Match Time 233 ms, Process Memory 30 MB
+
+File Name is TestText\More_KeyWords.txt
+File Size is 28 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\OneLine_Text.txt
+File Size is 4 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Ordinary_Text.txt
+File Size is 2703160 Bytes
+Match Count: 76, Match Time 2 ms, Process Memory 30 MB
+
+File Name is TestText\中文路径.txt
+File Size is 2703160 Bytes
+Match Count: 76, Match Time 3 ms, Process Memory 30 MB
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
+Pattern : a
+File Name is TestText\Big_Size.txt 
+File Size is 1228784674 Bytes
+Match Count: 9785628, Match Time 9295 ms, Process Memory 67 MB
+
+File Name is TestText\Chinese_Character.txt   
+File Size is 406 Bytes
+Match Count: 3, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Empty_Text.txt   
+File Size is 0 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\Middle_Size.txt
+File Size is 168452369 Bytes
+Match Count: 1027470, Match Time 1309 ms, Process Memory 34 MB
+
+File Name is TestText\More_KeyWords.txt
+File Size is 28 Bytes
+Match Count: 0, Match Time 0 ms, Process Memory 30 MB
+
+File Name is TestText\OneLine_Text.txt
+File Size is 4 Bytes
+Match Count: 0, Match Time 1 ms, Process Memory 30 MB
+
+File Name is TestText\Ordinary_Text.txt
+File Size is 2703160 Bytes
+Match Count: 29000, Match Time 21 ms, Process Memory 30 MB
+
+File Name is TestText\中文路径.txt
+File Size is 2703160 Bytes
+Match Count: 29000, Match Time 22 ms, Process Memory 30 MB
+
+File Name is TestText\No_Exist_Text.txt
+Failed Search
+
