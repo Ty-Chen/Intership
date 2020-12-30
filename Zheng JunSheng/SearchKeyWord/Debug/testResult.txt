@@ -1,0 +1,294 @@
+test:
+KeyWord = "KGLOG" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\KGLOG.log"
+spend time                  	 = 0.320000s
+number of result statistics 	 = 0
+nWorkingSetSize             	 = 4444160 byte
+nPeakWorkingSetSize         	 = 56872960 byte
+nVirtualMemory              	 = 937984 byte
+test:
+KeyWord = "KG" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\KG.log"
+spend time                  	 = 0.322000s
+number of result statistics 	 = 1
+nWorkingSetSize             	 = 4448256 byte
+nPeakWorkingSetSize         	 = 56877056 byte
+nVirtualMemory              	 = 933888 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 5.731000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4423680 byte
+nPeakWorkingSetSize         	 = 109285376 byte
+nVirtualMemory              	 = 913408 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 0.371000s
+number of result statistics 	 = 17
+nWorkingSetSize             	 = 4444160 byte
+nPeakWorkingSetSize         	 = 56872960 byte
+nVirtualMemory              	 = 925696 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 5.738000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4452352 byte
+nPeakWorkingSetSize         	 = 109314048 byte
+nVirtualMemory              	 = 921600 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 5.805000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4452352 byte
+nPeakWorkingSetSize         	 = 109314048 byte
+nVirtualMemory              	 = 917504 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 5.705000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4481024 byte
+nPeakWorkingSetSize         	 = 109342720 byte
+nVirtualMemory              	 = 913408 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 12.852000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4513792 byte
+nPeakWorkingSetSize         	 = 109375488 byte
+nVirtualMemory              	 = 933888 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 3.618000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4497408 byte
+nPeakWorkingSetSize         	 = 109359104 byte
+nVirtualMemory              	 = 929792 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 3.439000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4468736 byte
+nPeakWorkingSetSize         	 = 109330432 byte
+nVirtualMemory              	 = 901120 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 3.820000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4468736 byte
+nPeakWorkingSetSize         	 = 109330432 byte
+nVirtualMemory              	 = 901120 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 3.441000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4472832 byte
+nPeakWorkingSetSize         	 = 109334528 byte
+nVirtualMemory              	 = 909312 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 3.372000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4472832 byte
+nPeakWorkingSetSize         	 = 109334528 byte
+nVirtualMemory              	 = 913408 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 3.580000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4472832 byte
+nPeakWorkingSetSize         	 = 109334528 byte
+nVirtualMemory              	 = 913408 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 3.761000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4472832 byte
+nPeakWorkingSetSize         	 = 109334528 byte
+nVirtualMemory              	 = 901120 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 3.456000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4472832 byte
+nPeakWorkingSetSize         	 = 109334528 byte
+nVirtualMemory              	 = 901120 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 3.518000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4509696 byte
+nPeakWorkingSetSize         	 = 109371392 byte
+nVirtualMemory              	 = 942080 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 3.624000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4481024 byte
+nPeakWorkingSetSize         	 = 109342720 byte
+nVirtualMemory              	 = 913408 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 6.521000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4489216 byte
+nPeakWorkingSetSize         	 = 319070208 byte
+nVirtualMemory              	 = 925696 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 6.550000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4489216 byte
+nPeakWorkingSetSize         	 = 319070208 byte
+nVirtualMemory              	 = 913408 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 3.361000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4489216 byte
+nPeakWorkingSetSize         	 = 109350912 byte
+nVirtualMemory              	 = 917504 byte
+test:
+KeyWord = "K" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\K.log"
+spend time                  	 = 2.757000s
+number of result statistics 	 = 1523842
+nWorkingSetSize             	 = 4489216 byte
+nPeakWorkingSetSize         	 = 109350912 byte
+nVirtualMemory              	 = 917504 byte
+test:
+KeyWord = "K" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\K.log"
+spend time                  	 = 2.732000s
+number of result statistics 	 = 1523842
+nWorkingSetSize             	 = 4505600 byte
+nPeakWorkingSetSize         	 = 109367296 byte
+nVirtualMemory              	 = 933888 byte
+test:
+KeyWord = "K" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\K.log"
+spend time                  	 = 2.746000s
+number of result statistics 	 = 1523842
+nWorkingSetSize             	 = 4493312 byte
+nPeakWorkingSetSize         	 = 109355008 byte
+nVirtualMemory              	 = 921600 byte
+test:
+KeyWord = "KGLOG" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\KGLOG.log"
+spend time                  	 = 1.446000s
+number of result statistics 	 = 561432
+nWorkingSetSize             	 = 4489216 byte
+nPeakWorkingSetSize         	 = 109350912 byte
+nVirtualMemory              	 = 917504 byte
+test:
+KeyWord = "KGLOG" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\KGLOG.log"
+spend time                  	 = 1.474000s
+number of result statistics 	 = 561432
+nWorkingSetSize             	 = 4489216 byte
+nPeakWorkingSetSize         	 = 109350912 byte
+nVirtualMemory              	 = 921600 byte
+test:
+KeyWord = "KGLOG" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\KGLOG.log"
+spend time                  	 = 1.441000s
+number of result statistics 	 = 561432
+nWorkingSetSize             	 = 4489216 byte
+nPeakWorkingSetSize         	 = 109350912 byte
+nVirtualMemory              	 = 917504 byte
+test:
+KeyWord = "KGLOG" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\KGLOG.log"
+spend time                  	 = 1.456000s
+number of result statistics 	 = 561432
+nWorkingSetSize             	 = 4489216 byte
+nPeakWorkingSetSize         	 = 109350912 byte
+nVirtualMemory              	 = 917504 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\INFO.log"
+spend time                  	 = 3.456000s
+number of result statistics 	 = 7766476
+nWorkingSetSize             	 = 4489216 byte
+nPeakWorkingSetSize         	 = 109350912 byte
+nVirtualMemory              	 = 913408 byte
+test:
+KeyWord = "INFO" LogPath = "..\Debug\testLog\BigFile.log" ResultPath = "..\Debug\resultLog\BigFile\INFO.log"
+spend time                  	 = 3.554000s
+number of result statistics 	 = 767400
+nWorkingSetSize             	 = 4493312 byte
+nPeakWorkingSetSize         	 = 109355008 byte
+nVirtualMemory              	 = 921600 byte
+test:
+KeyWord = "DEBUG" LogPath = "..\Debug\testLog\BigFile.log" ResultPath = "..\Debug\resultLog\BigFile\DEBUG.log"
+spend time                  	 = 6.082000s
+number of result statistics 	 = 11463648
+nWorkingSetSize             	 = 4493312 byte
+nPeakWorkingSetSize         	 = 109355008 byte
+nVirtualMemory              	 = 917504 byte
+test:
+KeyWord = "DEBUG" LogPath = "..\Debug\testLog\BigFile.log" ResultPath = "..\Debug\resultLog\BigFile\DEBUG.log"
+spend time                  	 = 5.808000s
+number of result statistics 	 = 11463648
+nWorkingSetSize             	 = 4493312 byte
+nPeakWorkingSetSize         	 = 109355008 byte
+nVirtualMemory              	 = 925696 byte
+test:
+KeyWord = "DEBUG" LogPath = "..\Debug\testLog\BigFile.log" ResultPath = "..\Debug\resultLog\BigFile\DEBUG.log"
+spend time                  	 = 6.306000s
+number of result statistics 	 = 11463648
+nWorkingSetSize             	 = 5132288 byte
+nPeakWorkingSetSize         	 = 109993984 byte
+nVirtualMemory              	 = 917504 byte
+test:
+KeyWord = "DEBUG" LogPath = "..\Debug\testLog\BigFile.log" ResultPath = "..\Debug\resultLog\BigFile\DEBUG.log"
+spend time                  	 = 6.289000s
+number of result statistics 	 = 11463648
+nWorkingSetSize             	 = 5136384 byte
+nPeakWorkingSetSize         	 = 109998080 byte
+nVirtualMemory              	 = 913408 byte
+test:
+KeyWord = "K" LogPath = "..\Debug\testLog\BigFile.log" ResultPath = "..\Debug\resultLog\BigFile\K.log"
+spend time                  	 = 6.336000s
+number of result statistics 	 = 9396456
+nWorkingSetSize             	 = 5136384 byte
+nPeakWorkingSetSize         	 = 109998080 byte
+nVirtualMemory              	 = 917504 byte
+test:
+KeyWord = "K" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\K.log"
+spend time                  	 = 2.851000s
+number of result statistics 	 = 1523842
+nWorkingSetSize             	 = 5136384 byte
+nPeakWorkingSetSize         	 = 109998080 byte
+nVirtualMemory              	 = 917504 byte
+test:
+KeyWord = "天策" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\天策.log"
+spend time                  	 = 1.270000s
+number of result statistics 	 = 0
+nWorkingSetSize             	 = 5124096 byte
+nPeakWorkingSetSize         	 = 109985792 byte
+nVirtualMemory              	 = 913408 byte
+test:
+KeyWord = "天策" LogPath = "..\Debug\testLog\EmptyFile.log" ResultPath = "..\Debug\resultLog\EmptyFile\天策.log"
+spend time                  	 = 0.024000s
+number of result statistics 	 = 0
+nWorkingSetSize             	 = 5120000 byte
+nPeakWorkingSetSize         	 = 57548800 byte
+nVirtualMemory              	 = 909312 byte
+test:
+KeyWord = "KGLOG" LogPath = "..\Debug\testLog\EmptyFile.log" ResultPath = "..\Debug\resultLog\EmptyFile\KGLOG.log"
+spend time                  	 = 0.022000s
+number of result statistics 	 = 0
+nWorkingSetSize             	 = 5140480 byte
+nPeakWorkingSetSize         	 = 57569280 byte
+nVirtualMemory              	 = 933888 byte
+test:
+KeyWord = "KGLOG" LogPath = "..\Debug\testLog\EmptyFile.log" ResultPath = "..\Debug\resultLog\EmptyFile\KGLOG.log"
+spend time                  	 = 0.021000s
+number of result statistics 	 = 0
+nWorkingSetSize             	 = 5115904 byte
+nPeakWorkingSetSize         	 = 57544704 byte
+nVirtualMemory              	 = 917504 byte
+test:
+KeyWord = "KGLOG" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\KGLOG.log"
+spend time                  	 = 1.641000s
+number of result statistics 	 = 561432
+nWorkingSetSize             	 = 5136384 byte
+nPeakWorkingSetSize         	 = 109998080 byte
+nVirtualMemory              	 = 917504 byte
+test:
+KeyWord = "KGLOG" LogPath = "..\Debug\testLog\BigFile2.log" ResultPath = "..\Debug\resultLog\BigFile2\KGLOG.log"
+spend time                  	 = 1.634000s
+number of result statistics 	 = 561432
+nWorkingSetSize             	 = 5136384 byte
+nPeakWorkingSetSize         	 = 109998080 byte
+nVirtualMemory              	 = 925696 byte
