@@ -22,7 +22,7 @@
 #define MAX_LINE 2048
 #define MB  (1024 * 1024)
 #define MATCH_RESULT  "Match_Result_Statistics.txt"
-#define THREAD_NUM 4
+#define THREAD_NUM 8
 
 
 #endif // !MacroDefinition

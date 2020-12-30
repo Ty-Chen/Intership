@@ -43,9 +43,6 @@ bool KBlockMatch::Init()
     m_pszOutputText = new unsigned char[BUFFER_SIZE + MAX_LINE];
     KGLOG_PROCESS_ERROR(m_pszOutputText);
 
-     memset(m_szBlockLine, '\0', sizeof(m_szBlockLine));
-     m_nBlockLineLen = 0;
-
     bResult = true;
 Exit0:
     if (!bResult)
@@ -119,7 +116,7 @@ void KBlockMatch::UnInit()
     m_FileBlock.clear();
 }
 
-int KBlockMatch::MatchWords(unsigned char* pszPattern, char* pszResultPath, char* pszTestPath)
+int KBlockMatch::MatchWords(unsigned char* pszPattern, char* pszTestPath)
 {
     bool      bResult          = false;
     bool      bRetCode         = false;
@@ -130,7 +127,6 @@ int KBlockMatch::MatchWords(unsigned char* pszPattern, char* pszResultPath, char
     FILE*     fpFile           = NULL;
 
     KGLOG_PROCESS_ERROR(pszPattern);
-    KGLOG_PROCESS_ERROR(pszResultPath);
     KGLOG_PROCESS_ERROR(pszTestPath);
 
     pSundayTest = new KSunday();
@@ -251,32 +247,37 @@ Exit0:
 
 bool KBlockMatch::ReadFileBlock(FILE* fpFile)
 {
-    bool bResult = false;
-
+    bool bResult   = false;
+    int  nReadSize = 0;
+    int  nOffset   = 0;
+    int  nRetCode  = 0;
     KGLOG_PROCESS_ERROR(fpFile);
 
     for (int i = 0; i < THREAD_NUM; i++)
     {
-        int nReadSize = 0;
         nReadSize = fread(m_pszReadText[i], 1, BUFFER_SIZE, fpFile);
         KGLOG_PROCESS_ERROR(nReadSize >= 0);
 
-        fgets(m_szBlockLine, MAX_LINE, fpFile);
-        m_nBlockLineLen = strlen(m_szBlockLine);
-
-        for (int j = nReadSize; j < nReadSize + m_nBlockLineLen; j++)
+        if (nReadSize == BUFFER_SIZE)
         {
-            m_pszReadText[i][j] = m_szBlockLine[j - m_nReadTextLen[i]];
+            for (int j = nReadSize - 1; j >= 0; j--)
+            {
+                if (m_pszReadText[i][j] == '\n' || m_pszReadText[i][j] == '\r')
+                {
+                    nOffset = nReadSize - j;
+
+                    nReadSize = j;
+                    break;
+                }
+            }
+            nRetCode = fseek(fpFile, -nOffset, SEEK_CUR);
+            KGLOG_PROCESS_ERROR(nRetCode >= 0);
         }
 
-        nReadSize += m_nBlockLineLen;
         m_pszReadText[i][nReadSize] = '\n';
         nReadSize++;
 
         m_nReadTextLen[i] = nReadSize;
-
-        memset(m_szBlockLine, '\0', sizeof(m_szBlockLine));
-        m_nBlockLineLen = 0;
     }
 
     bResult = true;

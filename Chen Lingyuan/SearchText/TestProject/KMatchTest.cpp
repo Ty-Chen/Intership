@@ -118,7 +118,6 @@ bool KMatchTest::Match()
 
             nMatchCount = pBlockMatch->MatchWords(
                 (unsigned char*)m_szKeyWordsList[i].c_str(),
-                (char*)m_szFullResultPath.c_str(),
                 (char*)m_szTestFileList[j].c_str()
             );
             if (nMatchCount < 0)
@@ -204,7 +203,6 @@ Exit0:
         fclose(fpFile);
         fpFile = NULL;
     }
-
     return bResult;
 }
 

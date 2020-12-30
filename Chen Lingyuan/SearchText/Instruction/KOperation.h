@@ -3,6 +3,7 @@
 #define KOPERATION_H_
 
 #include<string>
+#include<vector>
 
 #include<KBlockMatch.h>
 #include"KMacro.h"
@@ -13,12 +14,20 @@ public:
     KOperation();
     ~KOperation();
 
-    bool CommandParse(std::string szCommand);
+    void Init();
+
+    void CommandInput();
 
 private:
-    bool OutputMatchResult();
+    bool CommandParse(std::string szCommand);
 
-    bool OutputToDoucment();
+    bool OutputMatchResult(unsigned char* pszPattern, std::string szSourcePath);
 
+    bool OutputToDoucment(unsigned char* pszPattern, std::string szSourcePath, std::string szTargetPath);
+
+    void GetFiles(std::string szPath);
+
+private:
+    std::vector <std::string> m_szFileList;
 };
 #endif

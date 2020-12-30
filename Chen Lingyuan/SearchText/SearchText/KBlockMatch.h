@@ -27,7 +27,7 @@ public:
     bool Init();
     void UnInit();
 
-    int MatchWords(unsigned char* pszPattern, char* pszResultPath, char* pszTestPath);
+    int MatchWords(unsigned char* pszPattern, char* pszTestPath);
 
     long long TraversBlock(char* pszTestPath,char* pszResultPath);
 
@@ -51,9 +51,6 @@ private:
 
     int*            m_pnTempMatch[THREAD_NUM];
     int             m_nTempMatchLen[THREAD_NUM];
-
-    char            m_szBlockLine[MAX_LINE];
-    int             m_nBlockLineLen;
 
     std::vector<KPART_OF_FILE> m_FileBlock;
 };
