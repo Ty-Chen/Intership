@@ -2,18 +2,14 @@
 //
 
 #include<string>
+#include<time.h>
+#include<vector>
 
 #include"KOperation.h"
 #include"KMacro.h"
 
 int main()
 {
-    char s[8] = "abcdefg";
-    char* p = s;
-    p+=1;
-    memmove(p, s, 4);
-    printf("%s\n", p);
-
     KOperation* pOperation = NULL;
 
     pOperation = new KOperation();

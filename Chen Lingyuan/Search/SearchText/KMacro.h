@@ -20,7 +20,6 @@
 #define BUFFER_SIZE (1024 * 1024 * 1)
 #define MAX_FILE_SIZE (1024 * 1024 * 200)
 #define MAX_LINE 1024
-#define MB  (1024 * 1024)
 #define MATCH_RESULT  "Match_Result_Statistics.txt"
 #define THREAD_NUM 8
 

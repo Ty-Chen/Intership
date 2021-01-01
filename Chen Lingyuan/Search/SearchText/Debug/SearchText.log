@@ -1,2 +1,6 @@
 ﻿  KBlockMatch.cpp
+  KKmp.cpp
+  KMatchWords.cpp
+  KSunday.cpp
+  正在生成代码...
   SearchText.vcxproj -> D:\实习记录\SearchText\Debug\SearchText.lib

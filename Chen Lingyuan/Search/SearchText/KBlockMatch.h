@@ -30,15 +30,17 @@ public:
 
     int MatchWords(unsigned char* pszPattern, char* pszTestPath);
 
-    long long TraversBlock(char* pszTestPath,char* pszResultPath);
+    long long TraversBlock(char* pszTestPath,FILE* fpResultFile, bool IsOutputConsole);
 
 private:
+
+
      bool ReadFileBlock(FILE* fpFile);
 
      bool  CollectDate(
          int* pnMatchArray, int nMatchArrayLen,
          unsigned char* pszText, int nTextLen,
-         FILE* fpResult, char* pszTestPath
+         FILE* fpResult, char* pszTestPath, bool IsOutputConsole
      );
 
      bool IsReadComplete();

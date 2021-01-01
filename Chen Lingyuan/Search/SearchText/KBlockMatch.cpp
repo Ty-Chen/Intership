@@ -118,8 +118,6 @@ void KBlockMatch::UnInit()
 
 int KBlockMatch::MatchWords(unsigned char* pszPattern, char* pszTestPath)
 {
-
-
     bool      bResult          = false;
     bool      bRetCode         = false;
     bool      bReadComplete    = false;
@@ -194,6 +192,8 @@ int KBlockMatch::MatchWords(unsigned char* pszPattern, char* pszTestPath)
 
         bReadComplete = IsReadComplete();
     }
+
+
 
     bResult = true;
 Exit0:
@@ -270,7 +270,7 @@ Exit0:
 bool KBlockMatch::CollectDate(
     int* pnMatchArray, int nMatchArrayLen,
     unsigned char* pszText, int nTextLen,
-    FILE* fpResult, char* pszTestPath
+    FILE* fpResult, char* pszTestPath, bool isOutputConsole
 )
 {
     bool  bResult      = false;
@@ -281,7 +281,6 @@ bool KBlockMatch::CollectDate(
 
     KGLOG_PROCESS_ERROR(pnMatchArray);
     KGLOG_PROCESS_ERROR(pszText);
-    KGLOG_PROCESS_ERROR(fpResult);
     KGLOG_PROCESS_ERROR(pszTestPath);
 
     pszMatchTest = new char[BUFFER_SIZE * 3];
@@ -325,9 +324,20 @@ bool KBlockMatch::CollectDate(
 
         pszMatchTest[nOutLen++] = '\n';
     }
+    if (!isOutputConsole)
+    {
+        KGLOG_PROCESS_ERROR(fpResult);
 
-    nRetCode = fwrite(pszMatchTest, 1, nOutLen, fpResult);
-    KGLOG_PROCESS_ERROR(nRetCode == nOutLen);
+        nRetCode = fwrite(pszMatchTest, 1, nOutLen, fpResult);
+        KGLOG_PROCESS_ERROR(nRetCode == nOutLen);
+    }
+    else
+    {
+        for (int i = 0; i < nOutLen; i++)
+        {
+            printf("%c", pszMatchTest[i]);
+        }
+    }
 
     bResult = true;
 Exit0:
@@ -340,7 +350,7 @@ Exit0:
     return bResult;
 }
 
-long long KBlockMatch::TraversBlock(char* pszTestPath,char* pszResultPath)
+long long KBlockMatch::TraversBlock(char* pszTestPath,FILE* fpResultFile , bool IsOutputConsole)
 {
     bool         bResult     = false;
     bool         bRetCode    = false;
@@ -348,20 +358,12 @@ long long KBlockMatch::TraversBlock(char* pszTestPath,char* pszResultPath)
     int          nBlockSize  = 0;
     long long    llFilesize  = 0;
     FILE*        fpFile      = NULL;
-    FILE*        fpResult    = NULL;
     unsigned int nBlockCount = 0;
 
     KGLOG_PROCESS_ERROR(pszTestPath);
-    KGLOG_PROCESS_ERROR(pszResultPath);
 
     fpFile = fopen(pszTestPath, "rb");
     KGLOG_PROCESS_ERROR(fpFile);
-
-    fpResult = fopen(pszResultPath,"w");
-    if (!fpResult)
-    {
-        goto Exit0;
-    }
 
     nBlockCount = m_FileBlock.size();
     for (unsigned int i = 0; i < nBlockCount; i++)
@@ -378,7 +380,7 @@ long long KBlockMatch::TraversBlock(char* pszTestPath,char* pszResultPath)
 
             bRetCode = CollectDate(
                 FileBlock.pnMatchArray, FileBlock.nMatchArrayLen,
-                m_pszOutputText, nBlockSize, fpResult, pszTestPath
+                m_pszOutputText, nBlockSize, fpResultFile, pszTestPath, IsOutputConsole
             );
         }
         else
@@ -400,12 +402,6 @@ Exit0:
     {
         fclose(fpFile);
         fpFile = NULL;
-    }
-
-    if (fpResult)
-    {
-        fclose(fpResult);
-        fpResult = NULL;
     }
 
     for (unsigned int i = 0; i < m_FileBlock.size(); i++)

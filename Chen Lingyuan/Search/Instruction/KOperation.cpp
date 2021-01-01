@@ -163,25 +163,26 @@ bool KOperation::JudgeIsSearch(std::string szCommand)
         szCommandResult.push_back(szTempResult);
     }
 
-    if (szCommandResult.size() != 4)
+    if (szCommandResult.size() == 5)
     {
-        goto Exit0;
-    }
-
-    if (szCommandResult[0] == "search" && szCommandResult[2] == ">")
-    {
-        bRetCode = OutputToDoucment(
+        if (szCommandResult[0] == "time" && szCommandResult[1] == "search" && szCommandResult[3] == ">")
+        {
+            bRetCode = OutputToDoucment(
             (unsigned char*)szPattern.c_str(),
-            (char*)szCommandResult[1].c_str(),
-            (char*)szCommandResult[3].c_str()
-        );
-        KGLOG_PROCESS_ERROR(bRetCode);
+            (char*)szCommandResult[2].c_str(),
+            (char*)szCommandResult[4].c_str()
+            );
+            KGLOG_PROCESS_ERROR(bRetCode);
+        }
     }
 
-    else if(szCommandResult[0]=="time" && szCommandResult[1] == "search" && szCommandResult[2] == "-c")
+    else if(szCommandResult.size() == 3)
     {
-        bRetCode = OutputMatchResult((unsigned char*)szPattern.c_str(), szCommandResult[3]);
-        KGLOG_PROCESS_ERROR(bRetCode);
+        if (szCommandResult[0]=="time" && szCommandResult[1] == "search")
+        {
+             bRetCode = OutputMatchResult((unsigned char*)szPattern.c_str(), szCommandResult[2]);
+             KGLOG_PROCESS_ERROR(bRetCode);
+        }
     }
 
     else
@@ -222,11 +223,19 @@ bool KOperation::CompareFile(std::string szFirstFilePath, std::string szSecondFi
 
     pszFirst = new char[BUFFER_SIZE];
     KGLOG_PROCESS_ERROR(pszFirst);
+    for (int i = 0; i < BUFFER_SIZE; i++)
+    {
+        pszFirst[i] = '\0';
+    }
 
     pszSecond = new char[BUFFER_SIZE];
     KGLOG_PROCESS_ERROR(pszSecond);
+    for (int i = 0; i < BUFFER_SIZE; i++)
+    {
+        pszSecond[i] = '\0';
+    }
 
-    while (feof(fpFirstFile) || feof(fpSecondFile))
+    while (!feof(fpFirstFile) || !feof(fpSecondFile))
     {
         nRetCode = fread(pszFirst, 1, BUFFER_SIZE, fpFirstFile);
         KGLOG_PROCESS_ERROR(nRetCode >= 0);
@@ -236,6 +245,7 @@ bool KOperation::CompareFile(std::string szFirstFilePath, std::string szSecondFi
 
         for (int i = 0; i < BUFFER_SIZE; i++)
         {
+            //printf("%d %d\n", pszFirst[i], pszSecond[i]);
             if (pszFirst[i] != pszSecond[i])
             {
                 bMatch = false;
@@ -286,7 +296,6 @@ bool KOperation::OutputMatchResult(unsigned char* pszPattern, std::string szSour
 {
     bool    bResult          = false;
     bool    bRetCode         = false;
-    int     nSumMatchCount   = 0;
     int     nFileCount       = 0;
     clock_t nStart           = 0;
     clock_t nEnd             = 0;
@@ -306,25 +315,24 @@ bool KOperation::OutputMatchResult(unsigned char* pszPattern, std::string szSour
     nFileCount = m_szFileList.size();
     if (nFileCount == 0)
     {
-        printf("The File does not Exist\n");
+        printf("The SourceFile does not Exist\n");
         bResult = true;
         goto Exit0;
     }
     for (int i = 0; i < nFileCount; i++)
     {
-        int nMatchCount = 0;
+        int nMatchCount      = 0;
+        long long llFileSize = 0;
+
         nMatchCount = pBlockMatch->MatchWords(pszPattern, (char*)m_szFileList[i].c_str());
         KGLOG_PROCESS_ERROR(nMatchCount >= 0);
 
-        nSumMatchCount += nMatchCount;
-        printf("%s : %d\n", (char*)m_szFileList[i].c_str(), nMatchCount);
+        llFileSize = pBlockMatch->TraversBlock((char*)m_szFileList[i].c_str(), NULL, true);
+        KGLOG_PROCESS_ERROR(llFileSize >= 0);
     }
 
     nEnd = clock();
 
-    KGLOG_PROCESS_ERROR(nSumMatchCount >= 0);
-
-    printf("Match : %d\n", nSumMatchCount);
     printf("Time: %d ms\n", nEnd - nStart);
 
     bResult = true;
@@ -341,10 +349,13 @@ Exit0:
 
 bool KOperation::OutputToDoucment(unsigned char* pszPattern, std::string szSourcePath, std::string szTargetPath)
 {
-    bool bResult             = false;
-    bool bRetCode            = false;
-    int  nFileCount          = 0;
-    KBlockMatch* pBlockMatch = NULL;
+    bool  bResult             = false;
+    bool  bRetCode            = false;
+    int   nFileCount          = 0;
+    clock_t nStart            = 0;
+    clock_t nEnd              = 0;
+    FILE* fpTargetFile        = NULL;
+    KBlockMatch* pBlockMatch  = NULL;
 
     KGLOG_PROCESS_ERROR(pszPattern);
 
@@ -360,10 +371,20 @@ bool KOperation::OutputToDoucment(unsigned char* pszPattern, std::string szSourc
 
     if (nFileCount == 0)
     {
-        printf("The File does not Exist\n");
+        printf("The SourceFile does not Exist\n");
         bResult = true;
         goto Exit0;
     }
+
+    fpTargetFile = fopen(szTargetPath.c_str(), "w");
+    if (!fpTargetFile)
+    {
+        printf("The TargetFile does not Exist\n");
+        bResult = true;
+        goto Exit0;
+    }
+
+    nStart = clock();
 
     for (int i = 0; i < nFileCount; i++)
     {
@@ -373,13 +394,22 @@ bool KOperation::OutputToDoucment(unsigned char* pszPattern, std::string szSourc
         nMatchCount = pBlockMatch->MatchWords(pszPattern, (char*)m_szFileList[i].c_str());
         KGLOG_PROCESS_ERROR(nMatchCount >= 0);
 
-        llFileSize = pBlockMatch->TraversBlock((char*)m_szFileList[i].c_str(), (char*)szTargetPath.c_str());
+        llFileSize = pBlockMatch->TraversBlock((char*)m_szFileList[i].c_str(), fpTargetFile, false);
         KGLOG_PROCESS_ERROR(llFileSize >= 0);
     }
+    nEnd = clock();
+
+    printf("Time : %d ms\n", nEnd - nStart);
 
     bResult = true;
 Exit0:
     m_szFileList.clear();
+
+    if (fpTargetFile)
+    {
+        fclose(fpTargetFile);
+        fpTargetFile = NULL;
+    }
 
     if (pBlockMatch)
     {
@@ -413,12 +443,12 @@ void KOperation::GetFiles(std::string szPath)
                 {
                     if (strcmp(FileInfo.name, ".") != 0 && strcmp(FileInfo.name, "..") != 0)
                     {
-                        GetFiles(szFullPath.assign(szPath).append("\\").append(FileInfo.name));
+                        GetFiles(szFullPath.assign(szPath).append("/").append(FileInfo.name));
                     }
                 }
                 else
                 {
-                    m_szFileList.push_back(szFullPath.assign(szPath).append("\\").append(FileInfo.name));
+                    m_szFileList.push_back(szFullPath.assign(szPath).append("/").append(FileInfo.name));
                 }
             } while (_findnext(hFile, &FileInfo) == 0);
             _findclose(hFile);
