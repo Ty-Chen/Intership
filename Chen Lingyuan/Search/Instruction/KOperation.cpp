@@ -245,9 +245,11 @@ bool KOperation::CompareFile(std::string szFirstFilePath, std::string szSecondFi
 
         for (int i = 0; i < BUFFER_SIZE; i++)
         {
-            //printf("%d %d\n", pszFirst[i], pszSecond[i]);
             if (pszFirst[i] != pszSecond[i])
             {
+                printf("%d %d %d\n",i,
+
+                    pszFirst[i], pszSecond[i]);
                 bMatch = false;
             }
         }
@@ -297,9 +299,11 @@ bool KOperation::OutputMatchResult(unsigned char* pszPattern, std::string szSour
     bool    bResult          = false;
     bool    bRetCode         = false;
     int     nFileCount       = 0;
+    int     nMatchCount      = 0;
     clock_t nStart           = 0;
     clock_t nEnd             = 0;
     KBlockMatch* pBlockMatch = NULL;
+    FILE* fpSourcePath       = NULL;
 
     KGLOG_PROCESS_ERROR(pszPattern);
 
@@ -311,24 +315,49 @@ bool KOperation::OutputMatchResult(unsigned char* pszPattern, std::string szSour
 
     nStart = clock();
 
-    GetFiles(szSourcePath);
-    nFileCount = m_szFileList.size();
-    if (nFileCount == 0)
+     fpSourcePath = fopen(szSourcePath.c_str(), "rb");
+    if (fpSourcePath)
     {
-        printf("The SourceFile does not Exist\n");
-        bResult = true;
-        goto Exit0;
-    }
-    for (int i = 0; i < nFileCount; i++)
-    {
-        int nMatchCount      = 0;
-        long long llFileSize = 0;
-
-        nMatchCount = pBlockMatch->MatchWords(pszPattern, (char*)m_szFileList[i].c_str());
+        std::string szTestPath = "";
+         nMatchCount = pBlockMatch->MatchWords(
+            pszPattern, fpSourcePath, (char*)szTestPath.c_str(),
+            NULL, true
+            );
         KGLOG_PROCESS_ERROR(nMatchCount >= 0);
+    }
+    else
+    {
+        GetFiles(szSourcePath);
 
-        llFileSize = pBlockMatch->TraversBlock((char*)m_szFileList[i].c_str(), NULL, true);
-        KGLOG_PROCESS_ERROR(llFileSize >= 0);
+        nFileCount = m_szFileList.size();
+        if (nFileCount == 0)
+        {
+            printf("The SourceFile does not Exist\n");
+            bResult = true;
+            goto Exit0;
+        }
+
+        for (int i = 0; i < nFileCount; i++)
+        {
+            FILE* fpTestFile  = NULL;
+
+            fpTestFile = fopen(m_szFileList[i].c_str(), "rb");
+            KGLOG_PROCESS_ERROR(fpTestFile);
+
+            m_szFileList[i] += ':';
+
+            nMatchCount = pBlockMatch->MatchWords(
+                pszPattern, fpTestFile, (char*)m_szFileList[i].c_str(),
+                NULL, true
+                );
+            KGLOG_PROCESS_ERROR(nMatchCount >= 0);
+
+            if (fpTestFile)
+            {
+                fclose(fpTestFile);
+                fpTestFile = NULL;
+            }
+        }
     }
 
     nEnd = clock();
@@ -352,9 +381,11 @@ bool KOperation::OutputToDoucment(unsigned char* pszPattern, std::string szSourc
     bool  bResult             = false;
     bool  bRetCode            = false;
     int   nFileCount          = 0;
+    int   nSumMatchCount      = 0;
     clock_t nStart            = 0;
     clock_t nEnd              = 0;
     FILE* fpTargetFile        = NULL;
+    FILE* fpSourcePath        = NULL;
     KBlockMatch* pBlockMatch  = NULL;
 
     KGLOG_PROCESS_ERROR(pszPattern);
@@ -365,18 +396,7 @@ bool KOperation::OutputToDoucment(unsigned char* pszPattern, std::string szSourc
     bRetCode = pBlockMatch->Init();
     KGLOG_PROCESS_ERROR(bRetCode);
 
-    GetFiles(szSourcePath);
-
-    nFileCount = m_szFileList.size();
-
-    if (nFileCount == 0)
-    {
-        printf("The SourceFile does not Exist\n");
-        bResult = true;
-        goto Exit0;
-    }
-
-    fpTargetFile = fopen(szTargetPath.c_str(), "w");
+    fpTargetFile = fopen(szTargetPath.c_str(), "wb");
     if (!fpTargetFile)
     {
         printf("The TargetFile does not Exist\n");
@@ -386,24 +406,68 @@ bool KOperation::OutputToDoucment(unsigned char* pszPattern, std::string szSourc
 
     nStart = clock();
 
-    for (int i = 0; i < nFileCount; i++)
+    fpSourcePath = fopen(szSourcePath.c_str(), "rb");
+    if (fpSourcePath)
     {
-        int nMatchCount      = 0;
-        long long llFileSize = 0;
+        std::string pszTestPath = "";
 
-        nMatchCount = pBlockMatch->MatchWords(pszPattern, (char*)m_szFileList[i].c_str());
-        KGLOG_PROCESS_ERROR(nMatchCount >= 0);
-
-        llFileSize = pBlockMatch->TraversBlock((char*)m_szFileList[i].c_str(), fpTargetFile, false);
-        KGLOG_PROCESS_ERROR(llFileSize >= 0);
+        nSumMatchCount = pBlockMatch->MatchWords(
+            pszPattern, fpSourcePath, (char*)pszTestPath.c_str(),
+            fpTargetFile, false
+            );
+        KGLOG_PROCESS_ERROR(nSumMatchCount >= 0);
     }
+    else
+    {
+        GetFiles(szSourcePath);
+
+        nFileCount = m_szFileList.size();
+        if (nFileCount == 0)
+        {
+            printf("The SourceFile does not Exist\n");
+            bResult = true;
+            goto Exit0;
+        }
+
+        for (int i = 0; i < nFileCount; i++)
+        {
+            FILE* fpTestFile  = NULL;
+            int   nMatchCount = 0;
+
+            fpTestFile = fopen(m_szFileList[i].c_str(), "rb");
+            KGLOG_PROCESS_ERROR(fpTestFile);
+
+            m_szFileList[i] += ':';
+
+            nMatchCount = pBlockMatch->MatchWords(
+                pszPattern, fpTestFile, (char*)m_szFileList[i].c_str(),
+                fpTargetFile, false
+                );
+            KGLOG_PROCESS_ERROR(nMatchCount >= 0);
+            nSumMatchCount += nMatchCount;
+
+            if (fpTestFile)
+            {
+                fclose(fpTestFile);
+                fpTestFile = NULL;
+            }
+        }
+    }
+
     nEnd = clock();
 
+    printf("Match : %d \n", nSumMatchCount);
     printf("Time : %d ms\n", nEnd - nStart);
 
     bResult = true;
 Exit0:
     m_szFileList.clear();
+
+    if (fpSourcePath)
+    {
+        fclose(fpSourcePath);
+        fpSourcePath = NULL;
+    }
 
     if (fpTargetFile)
     {
@@ -424,34 +488,33 @@ void KOperation::GetFiles(std::string szPath)
     long               hFile      = 0;
     struct _finddata_t FileInfo;
     std::string        szFullPath = "";
-    FILE*              fpFile     = NULL;
 
-    fpFile = fopen(szPath.c_str(), "rb");
-    if (fpFile)
+    szFullPath = szPath;
+    szFullPath += "/*";
+
+    hFile = _findfirst(szFullPath.c_str(), &FileInfo);
+    if (hFile != -1)
     {
-        fclose(fpFile);
-        fpFile = NULL;
-        m_szFileList.push_back(szPath);
-    }
-    else
-    {
-        if ((hFile = _findfirst(szFullPath.assign(szPath).append("\\*").c_str(), &FileInfo)) != -1)
+        do
         {
-            do
+            szFullPath = szPath;
+            szFullPath += "/";
+            szFullPath += FileInfo.name;
+
+            if ((FileInfo.attrib ==  _A_SUBDIR))
             {
-                if ((FileInfo.attrib &  _A_SUBDIR))
+                if (strcmp(FileInfo.name, ".") != 0 && strcmp(FileInfo.name, "..") != 0)
                 {
-                    if (strcmp(FileInfo.name, ".") != 0 && strcmp(FileInfo.name, "..") != 0)
-                    {
-                        GetFiles(szFullPath.assign(szPath).append("/").append(FileInfo.name));
-                    }
+                    GetFiles(szFullPath);
                 }
-                else
-                {
-                    m_szFileList.push_back(szFullPath.assign(szPath).append("/").append(FileInfo.name));
-                }
-            } while (_findnext(hFile, &FileInfo) == 0);
-            _findclose(hFile);
-        }
+            }
+            else
+            {
+                m_szFileList.push_back(szFullPath);
+            }
+        } while (_findnext(hFile, &FileInfo) == 0);
+
+        _findclose(hFile);
     }
+
 }

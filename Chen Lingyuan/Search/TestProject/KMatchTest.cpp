@@ -115,11 +115,6 @@ bool KMatchTest::Match()
             KGLOG_PROCESS_ERROR(bRetCode);
 
             fprintf(fpResultStatistic, "File Name is %s\n", m_szTestFileList[j].c_str());
-
-            nMatchCount = pBlockMatch->MatchWords(
-                (unsigned char*)m_szKeyWordsList[i].c_str(),
-                (char*)m_szTestFileList[j].c_str()
-            );
             if (nMatchCount < 0)
             {
                 fprintf(fpResultStatistic, "Failed Search\n\n");
@@ -129,8 +124,6 @@ bool KMatchTest::Match()
             hHandle = GetCurrentProcess();
             GetProcessMemoryInfo(hHandle, &PMC, sizeof(PMC));
 
-
-            llFileSize = pBlockMatch->TraversBlock((char*)m_szTestFileList[j].c_str(), (char*)m_szFullResultPath.c_str());
             if (llFileSize < 0)
             {
                 fprintf(fpResultStatistic, "\n");
@@ -139,9 +132,7 @@ bool KMatchTest::Match()
             nEnd = clock();
 
             fprintf(fpResultStatistic, "File Size is %lld Bytes\n", llFileSize);
-            fprintf(fpResultStatistic, "Match Count: %d, Match Time %d ms, Process Memory %d MB\n",
-                nMatchCount, nEnd - nStart , PMC.WorkingSetSize / MB
-            );
+
 
             bRetCode = Compare((char*)m_szFullResultPath.c_str(), (char*)m_szFullContrastPath.c_str(), fpResultStatistic);
             if (!bRetCode)

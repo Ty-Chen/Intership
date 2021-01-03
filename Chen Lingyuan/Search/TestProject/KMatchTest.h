@@ -3,8 +3,6 @@
 #define KMATCHTEST_H_
 
 #include"KSunday.h"
-#include"KKmp.h"
-#include"KMatchWords.h"
 #include"KMacro.h"
 #include"KBlockMatch.h"
 

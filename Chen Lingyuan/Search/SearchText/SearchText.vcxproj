@@ -155,16 +155,12 @@
   <ItemGroup>
     <ClCompile Include="KBlockMatch.cpp" />
     <ClCompile Include="KSunday.cpp" />
-    <ClCompile Include="KKmp.cpp" />
-    <ClCompile Include="KMatchWords.cpp" />
     <ClCompile Include="SearchText.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KBlockMatch.h" />
     <ClInclude Include="KSunday.h" />
-    <ClInclude Include="KKmp.h" />
     <ClInclude Include="KMacro.h" />
-    <ClInclude Include="KMatchWords.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

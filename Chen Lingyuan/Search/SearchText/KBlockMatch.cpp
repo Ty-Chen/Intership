@@ -40,7 +40,7 @@ bool KBlockMatch::Init()
         KGLOG_PROCESS_ERROR(m_pnTempMatch[i]);
     }
 
-    m_pszOutputText = new unsigned char[BUFFER_SIZE];
+    m_pszOutputText = new unsigned char[BUFFER_SIZE * 3];
     KGLOG_PROCESS_ERROR(m_pszOutputText);
 
     bResult = true;
@@ -104,39 +104,29 @@ void KBlockMatch::UnInit()
          delete[]m_pszOutputText;
          m_pszOutputText = NULL;
     }
-
-    for (unsigned int i = 0; i < m_FileBlock.size(); i++)
-    {
-        if (m_FileBlock[i].pnMatchArray)
-        {
-            delete []m_FileBlock[i].pnMatchArray;
-            m_FileBlock[i].pnMatchArray = NULL;
-        }
-    }
-    m_FileBlock.clear();
 }
 
-int KBlockMatch::MatchWords(unsigned char* pszPattern, char* pszTestPath)
+int KBlockMatch::MatchWords(
+    unsigned char* pszPattern, FILE* fpTestFile , char* pszTestPath,
+    FILE* fpResultFile, bool isOutputConsole
+)
 {
     bool      bResult          = false;
     bool      bRetCode         = false;
     bool      bReadComplete    = false;
     int       nMatchCount      = 0;
     int       nPatternLen      = 0;
+    int       nTestPathLen     = 0;
     KSunday*  pSundayTest      = NULL;
-    FILE*     fpFile           = NULL;
 
+    KGLOG_PROCESS_ERROR(fpTestFile);
     KGLOG_PROCESS_ERROR(pszPattern);
     KGLOG_PROCESS_ERROR(pszTestPath);
 
     pSundayTest = new KSunday();
     KGLOG_PROCESS_ERROR(pSundayTest);
 
-    fpFile = fopen(pszTestPath, "rb");
-    if (!fpFile)
-    {
-        goto Exit0;
-    }
+    nTestPathLen = strlen(pszTestPath);
 
     nPatternLen = strlen((char*)pszPattern);
     KGLOG_PROCESS_ERROR(nPatternLen <= PATTERN_SIZE);
@@ -144,14 +134,13 @@ int KBlockMatch::MatchWords(unsigned char* pszPattern, char* pszTestPath)
     bRetCode = pSundayTest->Init(pszPattern, nPatternLen);
     KGLOG_PROCESS_ERROR(bRetCode);
 
-    bRetCode = ReadFileBlock(fpFile);
+    bRetCode = ReadFileBlock(fpTestFile);
     KGLOG_PROCESS_ERROR(bRetCode);
 
     bReadComplete = IsReadComplete();
 
     for (int i = 0; !bReadComplete; i++)
     {
-        KPART_OF_FILE TempFileBlock[THREAD_NUM];
         std::future<int> fMatch[THREAD_NUM];
 
         for (int j = 0; j < THREAD_NUM; j++)
@@ -162,30 +151,24 @@ int KBlockMatch::MatchWords(unsigned char* pszPattern, char* pszTestPath)
             );
         }
 
-        bRetCode = ReadFileBlock(fpFile);
+        bRetCode = ReadFileBlock(fpTestFile);
         KGLOG_PROCESS_ERROR(bRetCode);
 
         for (int j = 0; j < THREAD_NUM; j++)
         {
             int nCount = 0;
             nCount = fMatch[j].get();
+            nMatchCount += nCount;
 
             KGLOG_PROCESS_ERROR(nCount >= 0);
 
-            TempFileBlock[j].pnMatchArray = NULL;
-            TempFileBlock[j].nTextLen = m_nPerformTextLen[j] - 1;
-
-            TempFileBlock[j].nMatchArrayLen = nCount;
-            nMatchCount += nCount;
-
-            TempFileBlock[j].pnMatchArray = new int[nCount];
-            KGLOG_PROCESS_ERROR(TempFileBlock[j].pnMatchArray);
-
-            memcpy(TempFileBlock[j].pnMatchArray, m_pnTempMatch[j], nCount * sizeof(int));
-
-            TempFileBlock[j].pText = pszTestPath;
-
-            m_FileBlock.push_back(TempFileBlock[j]);
+            bRetCode = OutPut(
+                m_pnTempMatch[j], nCount,
+                m_pszPerformText[j], m_nPerformTextLen[j] - 1,
+                fpResultFile, pszTestPath, nTestPathLen,
+                isOutputConsole
+            );
+            KGLOG_PROCESS_ERROR(bRetCode);
 
             fMatch[j].~future();
         }
@@ -193,29 +176,11 @@ int KBlockMatch::MatchWords(unsigned char* pszPattern, char* pszTestPath)
         bReadComplete = IsReadComplete();
     }
 
-
-
     bResult = true;
 Exit0:
     if (!bResult)
     {
-        for (unsigned int i = 0; i < m_FileBlock.size(); i++)
-        {
-            if (m_FileBlock[i].pnMatchArray)
-            {
-                delete[]m_FileBlock[i].pnMatchArray;
-                m_FileBlock[i].pnMatchArray = NULL;
-            }
-        }
-        m_FileBlock.clear();
-
         nMatchCount = -1;
-    }
-
-    if (fpFile)
-    {
-        fclose(fpFile);
-        fpFile = NULL;
     }
 
     if (pSundayTest)
@@ -267,26 +232,20 @@ Exit0:
     return bResult;
 }
 
-bool KBlockMatch::CollectDate(
+bool KBlockMatch::OutPut(
     int* pnMatchArray, int nMatchArrayLen,
     unsigned char* pszText, int nTextLen,
-    FILE* fpResult, char* pszTestPath, bool isOutputConsole
+    FILE* fpResult, char* pszTestPath, int nTestPathLen,
+    bool isOutputConsole
 )
 {
     bool  bResult      = false;
     int   nRetCode     = 0;
     int   nOutLen      = 0;
-    int   nTestPathLen = 0;
-    char* pszMatchTest = NULL;
 
     KGLOG_PROCESS_ERROR(pnMatchArray);
     KGLOG_PROCESS_ERROR(pszText);
     KGLOG_PROCESS_ERROR(pszTestPath);
-
-    pszMatchTest = new char[BUFFER_SIZE * 3];
-    KGLOG_PROCESS_ERROR(pszMatchTest);
-
-    nTestPathLen = strlen(pszTestPath);
 
     for (int i = 0; i < nMatchArrayLen; ++i)
     {
@@ -296,13 +255,12 @@ bool KBlockMatch::CollectDate(
 
         for (int j = 0; j < nTestPathLen; j++)
         {
-            pszMatchTest[nOutLen++] = pszTestPath[j];
+            m_pszOutputText[nOutLen++] = pszTestPath[j];
         }
-        pszMatchTest[nOutLen++] = ':';
 
         for (int j = nIndex; j >= 0; j--)
         {
-            if (pszText[j] == '\n' || pszText[j] == '\r')
+            if (pszText[j] == '\n')
             {
                 nLeft = j + 1;
                 break;
@@ -310,111 +268,39 @@ bool KBlockMatch::CollectDate(
         }
         for (int j = nLeft; j <= nIndex; j++)
         {
-            pszMatchTest[nOutLen++] = pszText[j];
+            m_pszOutputText[nOutLen++] = pszText[j];
         }
 
         for (int j = nIndex + 1; j < nTextLen; j++)
         {
-            if (pszText[j] == '\n' || pszText[j] == '\r')
+            if (pszText[j] == '\n')
             {
                 break;
             }
-            pszMatchTest[nOutLen++] = pszText[j];
+            m_pszOutputText[nOutLen++] = pszText[j];
         }
 
-        pszMatchTest[nOutLen++] = '\n';
+        m_pszOutputText[nOutLen++] = '\n';
     }
     if (!isOutputConsole)
     {
         KGLOG_PROCESS_ERROR(fpResult);
 
-        nRetCode = fwrite(pszMatchTest, 1, nOutLen, fpResult);
+        nRetCode = fwrite(m_pszOutputText, 1, nOutLen, fpResult);
         KGLOG_PROCESS_ERROR(nRetCode == nOutLen);
     }
     else
     {
         for (int i = 0; i < nOutLen; i++)
         {
-            printf("%c", pszMatchTest[i]);
+            printf("%c",m_pszOutputText[i]);
         }
     }
 
     bResult = true;
 Exit0:
 
-    if (pszMatchTest)
-    {
-        delete []pszMatchTest;
-        pszMatchTest = NULL;
-    }
     return bResult;
-}
-
-long long KBlockMatch::TraversBlock(char* pszTestPath,FILE* fpResultFile , bool IsOutputConsole)
-{
-    bool         bResult     = false;
-    bool         bRetCode    = false;
-    int          nRetCode    = 0;
-    int          nBlockSize  = 0;
-    long long    llFilesize  = 0;
-    FILE*        fpFile      = NULL;
-    unsigned int nBlockCount = 0;
-
-    KGLOG_PROCESS_ERROR(pszTestPath);
-
-    fpFile = fopen(pszTestPath, "rb");
-    KGLOG_PROCESS_ERROR(fpFile);
-
-    nBlockCount = m_FileBlock.size();
-    for (unsigned int i = 0; i < nBlockCount; i++)
-    {
-        KPART_OF_FILE FileBlock;
-        FileBlock = m_FileBlock[i];
-
-        llFilesize += FileBlock.nTextLen;
-
-        if (FileBlock.pnMatchArray && FileBlock.nMatchArrayLen > 0)
-        {
-            nBlockSize = fread(m_pszOutputText, 1, FileBlock.nTextLen, fpFile);
-            KGLOG_PROCESS_ERROR(nBlockSize == FileBlock.nTextLen);
-
-            bRetCode = CollectDate(
-                FileBlock.pnMatchArray, FileBlock.nMatchArrayLen,
-                m_pszOutputText, nBlockSize, fpResultFile, pszTestPath, IsOutputConsole
-            );
-        }
-        else
-        {
-            nRetCode = fseek(fpFile, FileBlock.nTextLen, SEEK_CUR);
-            KGLOG_PROCESS_ERROR(nRetCode >= 0);
-        }
-    }
-
-    bResult = true;
-Exit0:
-    if (!bResult)
-    {
-
-        llFilesize = -1;
-    }
-
-    if (fpFile)
-    {
-        fclose(fpFile);
-        fpFile = NULL;
-    }
-
-    for (unsigned int i = 0; i < m_FileBlock.size(); i++)
-    {
-        if (m_FileBlock[i].pnMatchArray)
-        {
-            delete []m_FileBlock[i].pnMatchArray;
-            m_FileBlock[i].pnMatchArray = NULL;
-        }
-    }
-    m_FileBlock.clear();
-
-    return llFilesize;
 }
 
 bool KBlockMatch::IsReadComplete()
