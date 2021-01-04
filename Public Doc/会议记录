@@ -1,0 +1,14 @@
+本文记录每周的会议重点内容，不包括每个人自己的个人问题，仅包括共同的问题。
+
+2021/01/04
+
+1.在Linux和Windows下均编译执行通过
+2.命令行参数解析，可以参考getopt, getopt_long等
+3.printf变参的实现，printf格式修改
+4.fflush, fwrite, printf的区别
+5.git ignore的使用，代码仓库的清理
+6.文件读取函数的修改，可以参考dir和ls的使用，attrib的使用，ls源码学习
+7.BM Sunday算法优劣评估
+8.确认一下setmode的使用
+9.std::string的基本使用
+10.代码记得全部单步调试，每次会议前记得仔细检查代码规范
