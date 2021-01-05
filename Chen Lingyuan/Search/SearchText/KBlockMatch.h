@@ -21,8 +21,7 @@ public:
     void UnInit();
 
     int MatchWords(
-        unsigned char* pszPattern, FILE* fpTestFile, char* pszTestPath,
-        FILE* fpResultFile, bool isOutputConsole
+        unsigned char* pszPattern, std::string szTestPath
     );
 
 private:
@@ -33,8 +32,7 @@ private:
      bool  OutPut(
          int* pnMatchArray, int nMatchArrayLen,
          unsigned char* pszText, int nTextLen,
-         FILE* fpResult, char* pszTestPath, int nTestPathLen,
-         bool IsOutputConsole
+          char* pszTestPath, int nTestPathLen
      );
 
      bool IsReadComplete();

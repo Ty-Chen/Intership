@@ -16,23 +16,12 @@ public:
 
     void Init();
 
-    void CommandInput();
+    bool CommandInput(int argc, char* argv[]);
 
 private:
-    bool CommandParse(std::string szCommand);
+    bool Output(unsigned char* pszPattern, char* pszSourcePath);
 
-    bool JudgeIsCompare(std::string szCommand);
-
-    bool JudgeIsSearch(std::string szCommand);
-
-    bool CompareFile(std::string szFirstFile, std::string szSecondFile);
-
-    bool OutputMatchResult(unsigned char* pszPattern, std::string szSourcePath);
-
-    bool OutputToDoucment(unsigned char* pszPattern, std::string szSourcePath, std::string szTargetPath);
-
-    void GetFiles(std::string szPath);
-
+    bool GetFiles(std::string szPath);
 private:
     std::vector <std::string> m_szFileList;
 };

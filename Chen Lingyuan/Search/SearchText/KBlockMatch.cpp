@@ -47,12 +47,18 @@ bool KBlockMatch::Init()
 Exit0:
     if (!bResult)
     {
+        if (m_pszOutputText)
+        {
+            delete[]m_pszOutputText;
+            m_pszOutputText = NULL;
+        }
+
         for (int i = 0; i < THREAD_NUM; i++)
         {
-            if (m_pszReadText[i])
+            if (m_pnTempMatch[i])
             {
-                delete []m_pszReadText[i];
-                m_pszReadText[i] = NULL;
+                delete []m_pnTempMatch[i];
+                m_pnTempMatch[i] = NULL;
             }
 
             if (m_pszPerformText[i])
@@ -61,19 +67,13 @@ Exit0:
                 m_pszPerformText[i] = NULL;
             }
 
-            if (m_pnTempMatch[i])
+            if (m_pszReadText[i])
             {
-                delete []m_pnTempMatch[i];
-                m_pnTempMatch[i] = NULL;
+                delete []m_pszReadText[i];
+                m_pszReadText[i] = NULL;
             }
         }
-        if (m_pszOutputText)
-        {
-            delete[]m_pszOutputText;
-            m_pszOutputText = NULL;
-        }
     }
-
     return bResult;
 }
 
@@ -106,10 +106,7 @@ void KBlockMatch::UnInit()
     }
 }
 
-int KBlockMatch::MatchWords(
-    unsigned char* pszPattern, FILE* fpTestFile , char* pszTestPath,
-    FILE* fpResultFile, bool isOutputConsole
-)
+int KBlockMatch::MatchWords(unsigned char* pszPattern, std::string szTestPath)
 {
     bool      bResult          = false;
     bool      bRetCode         = false;
@@ -117,16 +114,23 @@ int KBlockMatch::MatchWords(
     int       nMatchCount      = 0;
     int       nPatternLen      = 0;
     int       nTestPathLen     = 0;
+    char*     pszTestPath      = NULL;
     KSunday*  pSundayTest      = NULL;
+    FILE*     fpFile           = NULL;
 
-    KGLOG_PROCESS_ERROR(fpTestFile);
     KGLOG_PROCESS_ERROR(pszPattern);
+
+    fpFile = fopen(szTestPath.c_str(), "rb");
+    KGLOG_PROCESS_ERROR(fpFile);
+
+    szTestPath += ':';
+    nTestPathLen = szTestPath.length();
+
+    pszTestPath = (char*)szTestPath.c_str();
     KGLOG_PROCESS_ERROR(pszTestPath);
 
     pSundayTest = new KSunday();
     KGLOG_PROCESS_ERROR(pSundayTest);
-
-    nTestPathLen = strlen(pszTestPath);
 
     nPatternLen = strlen((char*)pszPattern);
     KGLOG_PROCESS_ERROR(nPatternLen <= PATTERN_SIZE);
@@ -134,7 +138,7 @@ int KBlockMatch::MatchWords(
     bRetCode = pSundayTest->Init(pszPattern, nPatternLen);
     KGLOG_PROCESS_ERROR(bRetCode);
 
-    bRetCode = ReadFileBlock(fpTestFile);
+    bRetCode = ReadFileBlock(fpFile);
     KGLOG_PROCESS_ERROR(bRetCode);
 
     bReadComplete = IsReadComplete();
@@ -151,7 +155,7 @@ int KBlockMatch::MatchWords(
             );
         }
 
-        bRetCode = ReadFileBlock(fpTestFile);
+        bRetCode = ReadFileBlock(fpFile);
         KGLOG_PROCESS_ERROR(bRetCode);
 
         for (int j = 0; j < THREAD_NUM; j++)
@@ -165,8 +169,7 @@ int KBlockMatch::MatchWords(
             bRetCode = OutPut(
                 m_pnTempMatch[j], nCount,
                 m_pszPerformText[j], m_nPerformTextLen[j] - 1,
-                fpResultFile, pszTestPath, nTestPathLen,
-                isOutputConsole
+                pszTestPath, nTestPathLen
             );
             KGLOG_PROCESS_ERROR(bRetCode);
 
@@ -187,6 +190,12 @@ Exit0:
     {
         delete pSundayTest;
         pSundayTest = NULL;
+    }
+
+    if (fpFile)
+    {
+        fclose(fpFile);
+        fpFile = NULL;
     }
 
     return nMatchCount;
@@ -235,8 +244,7 @@ Exit0:
 bool KBlockMatch::OutPut(
     int* pnMatchArray, int nMatchArrayLen,
     unsigned char* pszText, int nTextLen,
-    FILE* fpResult, char* pszTestPath, int nTestPathLen,
-    bool isOutputConsole
+    char* pszTestPath, int nTestPathLen
 )
 {
     bool  bResult      = false;
@@ -282,20 +290,9 @@ bool KBlockMatch::OutPut(
 
         m_pszOutputText[nOutLen++] = '\n';
     }
-    if (!isOutputConsole)
-    {
-        KGLOG_PROCESS_ERROR(fpResult);
 
-        nRetCode = fwrite(m_pszOutputText, 1, nOutLen, fpResult);
-        KGLOG_PROCESS_ERROR(nRetCode == nOutLen);
-    }
-    else
-    {
-        for (int i = 0; i < nOutLen; i++)
-        {
-            printf("%c",m_pszOutputText[i]);
-        }
-    }
+    nRetCode = fwrite(m_pszOutputText, 1, nOutLen, stdout);
+    KGLOG_PROCESS_ERROR(nRetCode == nOutLen);
 
     bResult = true;
 Exit0:

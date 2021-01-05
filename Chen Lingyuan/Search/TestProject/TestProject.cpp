@@ -14,28 +14,12 @@
 
 #include"KMacro.h"
 #include"KBlockMatch.h"
-#include"KInstruction.h"
-#include"KMatchWords.h"
 
-int main(int argc, char *argv[])
+int main()
 {
-    bool          bRetCode     = false;
-    KInstruction* pInstruction = NULL;
 
-    pInstruction = new KInstruction();
 
-    bRetCode = pInstruction->Init(argc, argv);
-    KGLOG_PROCESS_ERROR(bRetCode);
 
-    bRetCode = pInstruction->ShowInstruction();
-    KGLOG_PROCESS_ERROR(bRetCode);
-
-Exit0:
-    if (pInstruction)
-    {
-        delete pInstruction;
-        pInstruction = NULL;
-    }
 
     return 0;
 }
