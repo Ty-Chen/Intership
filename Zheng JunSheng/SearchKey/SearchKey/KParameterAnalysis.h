@@ -9,7 +9,10 @@ public:
     KParameterAnalysis();
     ~KParameterAnalysis();
 
-    bool CmdOptionExists(int argc, char* argv[]);
+    bool GetOption(int argc, char* argv[]);
+private:
+    void OutHelp();
+    bool Sunday(char* pszKeyWord, char* pszFilePath);
 };
 #endif
 

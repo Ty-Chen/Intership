@@ -50,7 +50,7 @@ bool KSearch::RunSunday()
     bool     bResult       = false;
     int      nRetCode      = 0;
     int      nOffset       = 0;
-    int      nResdBuffLen  = 0;
+    int      nReadBuffLen  = 0;
     bool     bIsFinishFile = false;
     char*    pszReadBuff   = NULL;
     FILE*    fpFile        = NULL;
@@ -70,19 +70,24 @@ bool KSearch::RunSunday()
 
     while (true)
     {
-        nResdBuffLen = fread(pszReadBuff, 1, MAX_BUFFER, fpFile);
-        KGLOG_PROCESS_ERROR(nResdBuffLen > 0);
-        pszReadBuff[nResdBuffLen] = '\0';
+        nReadBuffLen = fread(pszReadBuff, 1, MAX_BUFFER, fpFile);
+        KGLOG_PROCESS_ERROR(nReadBuffLen >= 0);
+        pszReadBuff[nReadBuffLen] = '\0';
+
+        if (nReadBuffLen == 0)
+        {
+            break;
+        }
 
         bIsFinishFile = feof(fpFile);
-        if (pszReadBuff[nResdBuffLen - 1] != '\n' && !bIsFinishFile)
+        if (pszReadBuff[nReadBuffLen - 1] != '\n' && !bIsFinishFile)
         {
-            for (int i = nResdBuffLen - 1; i >= 0; --i)
+            for (int i = nReadBuffLen - 1; i >= 0; --i)
             {
                 if (pszReadBuff[i] == '\n')
                 {
-                    nOffset = nResdBuffLen - i;
-                    nResdBuffLen = i;
+                    nOffset = nReadBuffLen - i;
+                    nReadBuffLen = i;
                     break;
                 }
             }
@@ -91,7 +96,7 @@ bool KSearch::RunSunday()
             KGLOG_PROCESS_ERROR(nRetCode == 0);
         }
 
-        nRetCode = pSunday->Run((unsigned char*)pszReadBuff, nResdBuffLen);
+        nRetCode = pSunday->Run((unsigned char*)pszReadBuff, nReadBuffLen);
         KGLOG_PROCESS_ERROR(nRetCode > 0);
 
         if (bIsFinishFile)

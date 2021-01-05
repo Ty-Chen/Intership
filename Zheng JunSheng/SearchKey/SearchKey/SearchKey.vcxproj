@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="KGetOpt.cpp" />
     <ClCompile Include="KParameterAnalysis.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
@@ -163,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DefineMarco.h" />
+    <ClInclude Include="KGetOpt.h" />
     <ClInclude Include="KParameterAnalysis.h" />
     <ClInclude Include="KSearch.h" />
     <ClInclude Include="KSunday.h" />

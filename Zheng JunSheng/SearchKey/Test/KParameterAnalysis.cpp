@@ -15,7 +15,7 @@ KParameterAnalysis::~KParameterAnalysis()
 
 }
 
-bool KParameterAnalysis::CmdOptionExists(int argc, char* argv[])
+bool KParameterAnalysis::GetOption(int argc, char* argv[])
 {
     bool         bResult     = false;
     int          nRetCode    = 0;

@@ -9,7 +9,7 @@ public:
     KParameterAnalysis();
     ~KParameterAnalysis();
 
-    bool CmdOptionExists(int argc, char* argv[]);
+    bool GetOption(int argc, char* argv[]);
 };
 #endif
 

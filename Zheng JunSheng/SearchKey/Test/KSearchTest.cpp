@@ -96,7 +96,7 @@ Exit0:
     {
         if (pszText)
         {
-            delete[]pszText;
+            delete []pszText;
             pszText = NULL;
         }
     }

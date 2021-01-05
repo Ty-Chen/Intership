@@ -88,7 +88,14 @@ bool KSunday::Run(unsigned char* pszText, int nTextLen)
             {
                 pszResult[nResultLen++] = pszText[nIndex];
 
-                if (pszText[nIndex] == '\r' || nIndex == nTextLen - 1)
+                if (pszText[nIndex] == '\r')
+                {
+                    pszResult[nResultLen - 1] = '\n';
+                    nTextPos = nIndex;
+                    break;
+                }
+
+                if (pszText[nIndex] == '\n' || nIndex == nTextLen - 1)
                 {
                     nTextPos = nIndex;
                     break;

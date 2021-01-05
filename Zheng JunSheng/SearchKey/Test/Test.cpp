@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
     pParameterAnalysis = new KParameterAnalysis();
     KGLOG_PROCESS_ERROR(pParameterAnalysis);
 
-    nRetCode = pParameterAnalysis->CmdOptionExists(argc, argv);
+    nRetCode = pParameterAnalysis->GetOption(argc, argv);
     KGLOG_PROCESS_ERROR(nRetCode);
 
     bResult = true;
