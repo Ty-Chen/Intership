@@ -8,13 +8,13 @@
 
  在分块读取文本时，因为涉及到对块的最后一行读取不完整，所以一开始采用fgets对不完整的那一行进行读取，首先查阅MSDN与源码，得到fgets 的参数与定义
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-7154.png)
+![img](关于fgets的一点理解.assets/wps_clip_image-9714.png)
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-32359.png)
-
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-25449.png)
+![img](关于fgets的一点理解.assets/wps_clip_image-9750.png)
 
 
+
+![img](关于fgets的一点理解.assets/wps_clip_image-9780.png)
 
 首先给定的参数为count,但是实际最大读取个数为count-1,比较容易造成歧义，然后如果文件出现换行符，那么得到的字符最后也会有换行符，要比较小心，再者就是读取的文档行的大小不确定，无法确定读取的最大字节。
 
@@ -22,7 +22,9 @@
 
  最后我做了一个测试来验证正确性，我写了一行1024个字节的文档除了最后一个是2其他都是1，并写了测试代码：
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-24627.png)
+![img](关于fgets的一点理解.assets/wps_clip_image-9900.png)
+
+![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-9940.png)
 
 输出结果为空，但把倒数第二个1改成2并输出s[1022]，那么结果就是为2，与源码和MSDN的描述一致。 
 

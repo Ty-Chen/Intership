@@ -1,12 +1,20 @@
 ﻿#include "KOperation.h"
 
 #include<time.h>
+
+#ifdef WIN32
 #include<io.h>
 #include<fcntl.h>
+#else
+#include <unistd.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#endif
+
+#include<string.h>
 
 #include<iostream>
 #include<vector>
-#include<string>
 #include<queue>
 
 KOperation::KOperation()
@@ -23,97 +31,151 @@ void KOperation::Init()
 {
     m_szFileList.clear();
 }
-#define EPR                 fprintf(stderr,
-#define ERR(str, chr)       if(opterr){EPR "%s%c\n", str, chr);}
-int    opterr = 1;//当opterr=0时,getopt不向stderr输出错误信息
-int    optind = 1;//下一次调用getopt时，从optind存储的位置处重新开始检查选项
-int    optopt;//当命令行选项字符不包括在optstring中
-char    *optarg;//选项的参数指针
-
-int getopt (int argc, char *const argv[], const char *opts)//optstring
-{
-    static int sp = 1;
-    register int c;
-    register char *cp;
-
-    if (sp == 1)
-        if (optind >= argc || argv[optind][0] != '-' || argv[optind][1] == '\0')
-            return -1;
-        else if (strcmp(argv[optind], "--") == 0) {
-            optind++;
-            return -1;
-        }
-    optopt = c = argv[optind][sp];
-    if (c == ':' || (cp=strchr(opts, c)) == 0) {
-        ERR (": illegal option -- ", c);
-        if (argv[optind][++sp] == '\0') {
-            optind++;
-            sp = 1;
-        }
-        return '?';
-    }
-    if (*++cp == ':') {
-        if (argv[optind][sp+1] != '\0')
-            optarg = &argv[optind++][sp+1];
-        else if (++optind >= argc) {
-            ERR (": option requires an argument -- ", c);
-            sp = 1;
-            return '?';
-        } else
-            optarg = argv[optind++];
-        sp = 1;
-    } else {
-        if (argv[optind][++sp] == '\0') {
-            sp = 1;
-            optind++;
-        }
-        optarg = 0;
-    }
-    return c;
-}
 
 bool KOperation::CommandInput(int argc, char* argv[])
 {
-    bool bResult  = false;
-    bool bRetCode = false;
-    char szPattern[PATTERN_SIZE];
-    char szTestPath[MAX_LINE];
+    bool bResult      = false;
+    bool bRetCode     = false;
+    bool bIsHelp      = false;
+    int  nRestultChar = 0;
+    int  nOptind      = 1;
+    char* pszPattern  = NULL;
+    char* pszTestPath = NULL;
 
-    if (argc == 2)
+    nRestultChar = Getopt(argc, argv, "hp:f:", &nOptind);
+
+    while(nRestultChar != -1)
     {
-        if (strcmp(argv[1], "help") == 0)
+        switch(nRestultChar)
         {
-            printf("usage: Search  KeyWord LogPath\n");
-            printf("sample: Search KGLOG  E:/TestText/Log\n");
-            printf("\nexplain:\n");
-            printf("Two parameters, the first for the query keyword, the second for the query text path\n");
+            case 'h':
+                bIsHelp = true;
+                break;
+            case 'p':
+                pszPattern  = m_pszOptarg;
+                break;
+            case 'f':
+                pszTestPath = m_pszOptarg;
+                break;
+            case '?':
+                printf("Command cannot be executed\n");
+                goto Exit0;
+                break;
+            default:
+                break;
         }
+        nRestultChar = Getopt(argc, argv, "hp:f:", &nOptind);
     }
 
-    else if (argc == 3)
+    if (bIsHelp && !pszTestPath && !pszPattern)
     {
-        KGLOG_PROCESS_ERROR(argv);
+        printf(
+            "usage: Search  KeyWord LogPath\n"
+            "sample: Search KGLOG  E:/TestText/Log\n"
+            "\nexplain:\n"
+            "Two parameters, the first for the query keyword, the second for the query text path\n"
+        );
+    }
+    else if(pszTestPath && pszPattern && !bIsHelp)
+    {
+        KGLOG_PROCESS_ERROR(strlen(pszPattern) <= PATTERN_SIZE);
 
-        KGLOG_PROCESS_ERROR(argv[1][0] != '\0');
-        KGLOG_PROCESS_ERROR(argv[2][0] != '\0');
+#ifdef WIN32
+		_setmode(fileno(stdout), O_BINARY);
+#endif
 
-        KGLOG_PROCESS_ERROR(strlen(argv[1]) <= PATTERN_SIZE);
-
-        strncpy(szPattern, argv[1], sizeof(szPattern));
-        szPattern[sizeof(szPattern) - 1] = '\0';
-
-        strncpy(szTestPath, argv[2], sizeof(szTestPath));
-        szTestPath[sizeof(szTestPath) - 1] = '\0';
-
-        _setmode(fileno(stdout), O_BINARY);
-
-        bRetCode = Output((unsigned char*)szPattern, szTestPath);
+        bRetCode = Output((unsigned char*)pszPattern, pszTestPath);
         KGLOG_PROCESS_ERROR(bRetCode);
     }
+	else
+	{
+		printf("Command cannot be executed\n");
+	}
 
     bResult = true;
 Exit0:
     return bResult;
+}
+
+int KOperation:: Getopt(int argc, char* argv[], const char* pszOpstrintg, int* pnOptind)
+{
+    bool bResult          = false;
+    int  nOptind          = 0;
+    char cRetChar         = 0;
+    char* pParameterStart = NULL;
+
+    KGLOG_PROCESS_ERROR(argv);
+    KGLOG_PROCESS_ERROR(pnOptind);
+    KGLOG_PROCESS_ERROR(pszOpstrintg);
+
+	nOptind = *pnOptind;
+
+    if (nOptind >= argc || argv[nOptind][0] != '-' || argv[nOptind][1] == '\0')
+    {
+        goto Exit0;
+    }
+
+    else if (strcmp(argv[nOptind], "--") == 0)
+    {
+        nOptind++;
+        *pnOptind = nOptind;
+        goto Exit0;
+    }
+
+    cRetChar = argv[nOptind][1];
+
+    pParameterStart = (char*)strchr(pszOpstrintg, cRetChar);
+
+    if (pParameterStart == NULL || cRetChar ==':')
+    {
+        nOptind++;
+        *pnOptind = nOptind;
+
+        m_pszOptarg = NULL;
+
+        bResult  = true;
+        cRetChar = '?';
+        goto Exit0;
+    }
+    if (*++pParameterStart == ':')
+    {
+        if (argv[nOptind][2] != '\0')
+        {
+            m_pszOptarg = &argv[nOptind][2];
+            *pnOptind += 1;
+        }
+        else if(++nOptind >= argc)
+        {
+            *pnOptind = nOptind;
+            cRetChar = '?';
+        }
+        else
+        {
+            m_pszOptarg = argv[nOptind];
+
+            nOptind++;
+            *pnOptind = nOptind;
+        }
+    }
+    else
+    {
+        if(argv[nOptind][2] != '\0')
+        {
+            cRetChar = '?';
+        }
+        nOptind++;
+        *pnOptind = nOptind;
+        m_pszOptarg = NULL;
+    }
+
+    bResult = true;
+Exit0:
+    if (!bResult)
+    {
+        return -1;
+    }
+
+    return (int)cRetChar;
 }
 
 bool KOperation::Output(unsigned char* pszPattern, char* pszSourcePath)
@@ -134,11 +196,15 @@ bool KOperation::Output(unsigned char* pszPattern, char* pszSourcePath)
 
     bRetCode = pBlockMatch->Init();
     KGLOG_PROCESS_ERROR(bRetCode);
-
-    bRetCode = GetFiles(szSourcePath);
+#ifdef WIN32
+    bRetCode = GetWindowsFiles(szSourcePath);
     KGLOG_PROCESS_ERROR(bRetCode);
+#else
+	bRetCode = GetLinuxFiles(szSourcePath);
+	KGLOG_PROCESS_ERROR(bRetCode);
+#endif
 
-    nFileCount = m_szFileList.size();
+    nFileCount = (int)m_szFileList.size();
     if (nFileCount == 0)
     {
         printf("File does Exist\n");
@@ -167,8 +233,8 @@ Exit0:
     }
     return bResult;
 }
-
-bool KOperation::GetFiles(std::string szPath)
+#ifdef WIN32
+bool KOperation::GetWindowsFiles(std::string szPath)
 {
     bool                    bResult        = false;
     int                     nRetCode       = 0;
@@ -199,7 +265,7 @@ bool KOperation::GetFiles(std::string szPath)
         szTempPath = szTempFileList.front();
         szTempFileList.pop();
 
-        szFullPath = szPath;
+        szFullPath = szTempPath;
         szFullPath += "/*";
 
         hFile = _findfirst(szFullPath.c_str(), &FileInfo);
@@ -216,7 +282,7 @@ bool KOperation::GetFiles(std::string szPath)
             szFullPath = szTempPath;
             szFullPath += '/';
             szFullPath += FileInfo.name;
-            if (FileInfo.attrib ==  _A_SUBDIR )
+            if (FileInfo.attrib &  _A_SUBDIR )
             {
                 if (strcmp(FileInfo.name, ".") != 0 && strcmp(FileInfo.name, "..") != 0)
                 {
@@ -237,3 +303,77 @@ bool KOperation::GetFiles(std::string szPath)
 Exit0:
     return bResult;
 }
+
+#else
+bool KOperation::GetLinuxFiles(std::string szPath)
+{
+	bool                    bResult         = false;
+	int                     nRetCode        = 0;
+	std::string             szFullPath      = "";
+	std::string             szTempPath      = "";
+	std::queue<std::string> szTempFileList;
+	DIR                     *Dirstream      = NULL;
+	struct dirent           *FileInfo       = NULL;
+	struct stat              Stat;
+
+	stat(szPath.c_str(), &Stat);
+
+	if (!S_ISDIR(Stat.st_mode))
+	{
+		m_szFileList.push_back(szPath);
+		bResult = true;
+		goto Exit0;
+	}
+
+	szTempFileList.push(szPath);
+
+	while (!szTempFileList.empty())
+	{
+		szTempPath = szTempFileList.front();
+		szTempFileList.pop();
+
+		szFullPath = szTempPath;
+
+		Dirstream = opendir(szFullPath.c_str());
+		if (Dirstream == NULL)
+		{
+			nRetCode = closedir(Dirstream);
+			KGLOG_PROCESS_ERROR(nRetCode == 0);
+			continue;
+		}
+
+		while (true)
+		{
+			FileInfo = readdir(Dirstream);
+
+			if (!FileInfo)
+			{
+				break;
+			}
+
+			szFullPath = szTempPath;
+			szFullPath += '/';
+			szFullPath += FileInfo->d_name;
+
+			if (strcmp(FileInfo->d_name, ".") == 0 || strcmp(FileInfo->d_name, "..") == 0)    ///current dir OR parrent dir
+			{
+				continue;
+			}
+			else if (FileInfo->d_type == DT_REG)    //常规文件
+			{
+				m_szFileList.push_back(szFullPath);
+			}
+			else if (FileInfo->d_type == DT_DIR)    //文件夹
+			{
+				szTempFileList.push(szFullPath);
+			}
+		}
+		nRetCode = closedir(Dirstream);
+		KGLOG_PROCESS_ERROR(nRetCode == 0);
+	}
+
+	bResult = true;
+Exit0:
+	return bResult;
+}
+#endif

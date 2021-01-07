@@ -10,11 +10,11 @@ _finddata结构体，_findfirst函数,_findnext函数及_findclose函数全部�
 
 _finddata结构体专门用来储存文件的各种信息，具体的参数有
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-13849.png)
+![img](_finddata_t 结构体及相关函数运用.assets/wps_clip_image-2821.png)
 
 其中arrrib表示文件的属性，这些属性包含：
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-13728.png)
+![img](_finddata_t 结构体及相关函数运用.assets/wps_clip_image-2879.png)
 
 
 
@@ -32,7 +32,7 @@ Name代表文件的文件名
 
 下面是关于findfirst函数的参数与定义：
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-12377.png)
+![img](_finddata_t 结构体及相关函数运用.assets/wps_clip_image-2935.png)
 
 该函数的作用是查找与filespec相符合的文件，并更改fileinfo的信息。
 
@@ -42,7 +42,7 @@ findnext函数与findfirst函数类似的作用是查找对上次findfirst调用
 
 它的参数与findfirst有点不同：
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-5812.png)
+![img](_finddata_t 结构体及相关函数运用.assets/wps_clip_image-2981.png)
 
 第一个参数是findfirst返回的句柄。如果执行成功返回0，否则返回-1.
 

@@ -23,5 +23,4 @@
 #define MATCH_RESULT  "Match_Result_Statistics.txt"
 #define THREAD_NUM 8
 
-
 #endif // !MacroDefinition

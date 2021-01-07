@@ -8,11 +8,11 @@
 
   首先是关于memcpy的MSDN上的定义及其源码：
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-10410.png)
+![img](关于memecpy与memmove的一点区别.assets/wps_clip_image-10292.png)
 
 
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-616.png)
+![img](关于memecpy与memmove的一点区别.assets/wps_clip_image-10328.png)
 
 
 
@@ -20,9 +20,9 @@
 
  再看memmove的MSDN上的描述及源码
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-10236.png)
+![img](关于memecpy与memmove的一点区别.assets/wps_clip_image-10367.png)
 
- ![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-29574.png)
+ ![img](关于memecpy与memmove的一点区别.assets/wps_clip_image-10397.png)
 
 可以看到memmove多了判断，处理了内存重叠情况下的复制问题，但是因为多了判断，所以在处理较多内存块复制的时候效率不如memcpy，所以要根据情况使用这两个函数.
 
@@ -30,11 +30,11 @@
 
 最后是本人对于这两个函数的测试代码：
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-7681.png)
+![img](关于memecpy与memmove的一点区别.assets/wps_clip_image-10429.png)
 
 按照源码描述这样写复制内存时数据会出问题，但是实际情况是两次输出结果相同，翻阅 memcpy的MSDN有这样描述：
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-29046.png)
+![img](关于memecpy与memmove的一点区别.assets/wps_clip_image-10462.png)
 
 可能是制约函数对特殊情况做了处理才会使得两者结果相同。
 

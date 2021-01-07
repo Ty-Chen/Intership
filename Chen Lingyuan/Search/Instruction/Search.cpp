@@ -13,7 +13,6 @@ int main(int argc, char* argv[])
     KOperation* pOperation = NULL;
     bool         bRetCode  = false;
 
-
     pOperation = new KOperation();
     KGLOG_PROCESS_ERROR(pOperation);
 

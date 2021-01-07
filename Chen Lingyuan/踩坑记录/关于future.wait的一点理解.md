@@ -8,11 +8,11 @@
 
 ​    后来重新查阅了有关future的函数，这是MSDN上的有关分析：
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-9150.png)
+![img](关于future.wait的一点理解.assets/wps_clip_image-10093.png)
 
 换句话说就是在函数的结果变得可用之前会一直执行wait函数，然后我又查了future.get函数，这是截取MSDN的定义：
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-13267.png)
+![img](关于future.wait的一点理解.assets/wps_clip_image-10126.png)
 
 使用future.get等效于先调用future.wait再调用future.get。对于程序效率来说并没有太大的区别。
 
@@ -22,11 +22,11 @@
 
  首先是写了wait的代码
 
-​     ![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-28714.png)
+![img](关于future.wait的一点理解.assets/wps_clip_image-10155.png)
 
  然后就是不写wait的代码
 
-​    ![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-14479.png)
+![img](关于future.wait的一点理解.assets/wps_clip_image-10198.png)
 
 ##    问题总结
 

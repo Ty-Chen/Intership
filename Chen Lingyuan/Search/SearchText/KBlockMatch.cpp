@@ -1,6 +1,6 @@
 ﻿#include "KBlockMatch.h"
 
-#include<Windows.h>
+#include<string.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
@@ -124,7 +124,7 @@ int KBlockMatch::MatchWords(unsigned char* pszPattern, std::string szTestPath)
     KGLOG_PROCESS_ERROR(fpFile);
 
     szTestPath += ':';
-    nTestPathLen = szTestPath.length();
+    nTestPathLen = (int)szTestPath.length();
 
     pszTestPath = (char*)szTestPath.c_str();
     KGLOG_PROCESS_ERROR(pszTestPath);
@@ -132,7 +132,7 @@ int KBlockMatch::MatchWords(unsigned char* pszPattern, std::string szTestPath)
     pSundayTest = new KSunday();
     KGLOG_PROCESS_ERROR(pSundayTest);
 
-    nPatternLen = strlen((char*)pszPattern);
+    nPatternLen = (int)strlen((char*)pszPattern);
     KGLOG_PROCESS_ERROR(nPatternLen <= PATTERN_SIZE);
 
     bRetCode = pSundayTest->Init(pszPattern, nPatternLen);
@@ -211,7 +211,7 @@ bool KBlockMatch::ReadFileBlock(FILE* fpFile)
 
     for (int i = 0; i < THREAD_NUM; i++)
     {
-        nReadSize = fread(m_pszReadText[i], 1, BUFFER_SIZE, fpFile);
+        nReadSize = (int)fread(m_pszReadText[i], 1, BUFFER_SIZE, fpFile);
         KGLOG_PROCESS_ERROR(nReadSize >= 0);
 
         if (nReadSize == BUFFER_SIZE)
@@ -291,7 +291,7 @@ bool KBlockMatch::OutPut(
         m_pszOutputText[nOutLen++] = '\n';
     }
 
-    nRetCode = fwrite(m_pszOutputText, 1, nOutLen, stdout);
+    nRetCode = (int)fwrite(m_pszOutputText, 1, nOutLen, stdout);
     KGLOG_PROCESS_ERROR(nRetCode == nOutLen);
 
     bResult = true;

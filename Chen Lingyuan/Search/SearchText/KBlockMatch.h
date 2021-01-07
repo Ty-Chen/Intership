@@ -2,8 +2,6 @@
 #ifndef KBLOCKMATCH_H_
 #define KBLOCKMATCH_H_
 
-#include<windows.h>
-#include<psapi.h>
 #include<stdio.h>
 
 #include<vector>
@@ -48,7 +46,6 @@ private:
 
     int*            m_pnTempMatch[THREAD_NUM];
     int             m_nTempMatchLen[THREAD_NUM];
-
 };
 
 #endif

@@ -8,7 +8,7 @@
 
 下面是关于fflush在MSDN上的定义：
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-15227.png)
+![img](fflush的作用.assets/wps_clip_image-3167.png)
 
 fflush的返回类型是int型，如果成功刷新,fflush返回0。指定的流没有缓冲区或者只读打开时也返回0值。返回EOF指出一个错误。
 
@@ -20,13 +20,13 @@ fflush一般有两种用法，一种是ffush(stdin),还有一种是fflush(out)
 
 于是模拟了下缓冲区数据多余的情况，但是经过测试证明ffush(stdin)在windows上不起作用，这是一段测试代码
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-27571.png)
+![img](fflush的作用.assets/wps_clip_image-3212.png)
 
 这段代码意思很简单，从键盘输入两个字符并输出两个字符的ascll码，如果我输入两个a，则会输出97 97，但实际上我只输入了一个a再输入回车就输出了97 10，其中10是换行的ascll码，getchar的功能是从输入缓冲区读取下一个字符，当输入a在按下回车时，输入缓冲区实际有了'a'与'\n'两个字符，所以ch1变成了'a'，ch2变成了'\n'实际上一行连续输入两个a就能获取想要的结果，但有时候我们并不想一行输入多个字母而是一行一个字母，
 
 这个时候最好的办法是输入完回车之后，清空输入缓冲区。但是在ch1与ch2之间加入fflush(stdin)是没有效果的，如果想清空缓冲区要手动添加代码
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-14417.png)
+![img](fflush的作用.assets/wps_clip_image-3261.png)
 
 ## 这样能清除缓冲区的换行符。
 
@@ -36,9 +36,9 @@ fflush一般有两种用法，一种是ffush(stdin),还有一种是fflush(out)
 
  以下是测试程序：
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-2450.png)
+![img](fflush的作用.assets/wps_clip_image-3314.png)
 
-![img](file:///C:\Users\admin\AppData\Local\Temp\ksohtml\wps_clip_image-17327.png)
+![img](fflush的作用.assets/wps_clip_image-3359.png)
 
 该程序是向out.txt文件输入一百行字符串，如果不使用ffush(fpfile)或fclose，数据会一直在缓冲区，直到缓冲区满，如果未满则无法输入到文件，在调用了fflush(fpfile)或fclose之后成功传输到文件。
 
