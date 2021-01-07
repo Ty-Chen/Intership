@@ -7,7 +7,7 @@
 struct option
 {
     const char* pszName;
-    int  nVal;
+    int         nVal;
 };
 #endif
 
@@ -18,7 +18,7 @@ public:
     ~KGetOpt();
 
     int GetOptLong(
-        int argc, char* argv[], const struct option* pLongOpts
+        int argc, char* argv[], const struct option* pLongOptions
     );
 };
 #endif

@@ -12,6 +12,7 @@ public:
     bool GetOption(int argc, char* argv[]);
 private:
     void OutHelp();
+    bool GetFiles(char* pszDirectoryPath);
     bool Sunday(char* pszKeyWord, char* pszFilePath);
 };
 #endif
