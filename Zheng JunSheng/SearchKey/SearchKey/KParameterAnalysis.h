@@ -3,17 +3,27 @@
 
 #include "DefineMarco.h"
 
+#include <string>
+#include <vector>
+
 class KParameterAnalysis
 {
 public:
     KParameterAnalysis();
     ~KParameterAnalysis();
 
-    bool GetOption(int argc, char* argv[]);
+    void Init();
+    void UnInit();
+
+    bool CommandInput(int argc, char* argv[]);
 private:
+    int  GetOption(int argc, char* argv[], struct option* pLongOptions, int nOptind);
     void OutHelp();
-    bool GetFiles(char* pszDirectoryPath);
-    bool Sunday(char* pszKeyWord, char* pszFilePath);
+    bool GetWindowsFiles(char* pszDirectoryPath);
+    bool GetLinuxFile(char* pszPath);
+    bool Sunday(char* pszKeyWord, const char* pszFilePath);
+private:
+    std::vector<std::string> m_szFileList;
 };
 #endif
 

@@ -9,7 +9,7 @@ public:
     KParameterAnalysis();
     ~KParameterAnalysis();
 
-    bool GetOption(int argc, char* argv[]);
+    bool CommandInput(int argc, char* argv[]);
 };
 #endif
 
