@@ -1,9 +1,0 @@
-time search 'DEBUG' E:/TestText > out.txt
-
-time grep -ra  DEBUG E:\\TestText > grep.txt
-
-time search 'DEBUG' E:\TestText\other\Big_Size.txt > out.txt
-
-time grep -ra  a E:\\TestText\\other\\Big_Size.txt  > grep.txt
-
-cly10151075

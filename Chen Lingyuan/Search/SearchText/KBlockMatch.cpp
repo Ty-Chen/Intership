@@ -118,30 +118,30 @@ int KBlockMatch::MatchWords(unsigned char* pszPattern, std::string szTestPath)
     KSunday*  pSundayTest      = NULL;
     FILE*     fpFile           = NULL;
 
-    KGLOG_PROCESS_ERROR(pszPattern);
+	KGLOG_PROCESS_ERROR(pszPattern);
 
-    fpFile = fopen(szTestPath.c_str(), "rb");
-    KGLOG_PROCESS_ERROR(fpFile);
+	fpFile = fopen(szTestPath.c_str(), "rb");
+	KGLOG_PROCESS_ERROR(fpFile);
 
-    szTestPath += ':';
-    nTestPathLen = (int)szTestPath.length();
+	szTestPath += ':';
+	nTestPathLen = (int)szTestPath.length();
 
-    pszTestPath = (char*)szTestPath.c_str();
-    KGLOG_PROCESS_ERROR(pszTestPath);
+	pszTestPath = (char*)szTestPath.c_str();
+	KGLOG_PROCESS_ERROR(pszTestPath);
 
-    pSundayTest = new KSunday();
-    KGLOG_PROCESS_ERROR(pSundayTest);
+	pSundayTest = new KSunday();
+	KGLOG_PROCESS_ERROR(pSundayTest);
 
-    nPatternLen = (int)strlen((char*)pszPattern);
-    KGLOG_PROCESS_ERROR(nPatternLen <= PATTERN_SIZE);
+	nPatternLen = (int)strlen((char*)pszPattern);
+	KGLOG_PROCESS_ERROR(nPatternLen <= PATTERN_SIZE);
 
-    bRetCode = pSundayTest->Init(pszPattern, nPatternLen);
-    KGLOG_PROCESS_ERROR(bRetCode);
+	bRetCode = pSundayTest->Init(pszPattern, nPatternLen);
+	KGLOG_PROCESS_ERROR(bRetCode);
 
-    bRetCode = ReadFileBlock(fpFile);
-    KGLOG_PROCESS_ERROR(bRetCode);
+	bRetCode = ReadFileBlock(fpFile);
+	KGLOG_PROCESS_ERROR(bRetCode);
 
-    bReadComplete = IsReadComplete();
+	bReadComplete = IsReadComplete();
 
     for (int i = 0; !bReadComplete; i++)
     {

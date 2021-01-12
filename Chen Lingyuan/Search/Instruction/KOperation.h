@@ -15,20 +15,19 @@ public:
     ~KOperation();
 
     void Init();
+    void UnInit();
 
     bool CommandInput(int argc, char* argv[]);
 
 private:
-    int Getopt(int argc, char* argv[], const char* pszOpstring, int* pnOptind);
+    int Getopt(int argc, char* argv[], const char* pszOpstring, int nIndex);
 
-    bool Output(unsigned char* pszPattern, char* pszSourcePath);
+    bool Search(unsigned char* pszPattern, char* pszSourcePath);
 
-    bool GetWindowsFiles(std::string szPath);
-
-	bool GetLinuxFiles(std::string szPath);
+    bool GetFiles(std::string szPath);
 private:
     std::vector <std::string> m_szFileList;
 
-	char* m_pszOptarg;
+    char* m_pszOptarg;
 };
 #endif
