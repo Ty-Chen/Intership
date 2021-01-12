@@ -46,7 +46,7 @@ void KParameterAnalysis::Init()
 
 void KParameterAnalysis::UnInit()
 {
-    std::vector <std::string>().swap(m_szFileList);
+    m_szFileList.clear();
 }
 
 bool KParameterAnalysis::CommandInput(int argc, char* argv[])
@@ -67,6 +67,9 @@ bool KParameterAnalysis::CommandInput(int argc, char* argv[])
 
     while (nRetGetOption != -1)
     {
+        ++nOptind;
+        nRetGetOption = GetOption(argc, argv, LongOptions, nOptind);
+
         switch (nRetGetOption)
         {
             case 'h':
@@ -79,6 +82,7 @@ bool KParameterAnalysis::CommandInput(int argc, char* argv[])
                 bIsIllegalOpt = true;
                 nIllegalOptPos = nOptind;
                 break;
+            case 1:
             case 2:
             case 3:
                 pszEffectiveArgv[nCntEffectiveArgv++] = argv[nRetGetOption];
@@ -86,9 +90,6 @@ bool KParameterAnalysis::CommandInput(int argc, char* argv[])
             default:
                 break;
         }
-
-        ++nOptind;
-        nRetGetOption = GetOption(argc, argv, LongOptions, nOptind);
     }
 
     if (bIsIllegalOpt)
@@ -97,18 +98,17 @@ bool KParameterAnalysis::CommandInput(int argc, char* argv[])
     }
     else if (bIsHelp || nCntEffectiveArgv == 0)
     {
-        OutHelp();
+        Output();
     }
-    else if(nCntEffectiveArgv == 2)
+    else if (nCntEffectiveArgv == 2)
     {
+        nRetCode = GetFiles(pszEffectiveArgv[1]);
+        KGLOG_PROCESS_ERROR(nRetCode);
 
-#ifdef linux
-        nRetCode = GetLinuxFile(pszEffectiveArgv[1]);
-        KGLOG_PROCESS_ERROR(nRetCode);
-#else
-        nRetCode = GetWindowsFiles(pszEffectiveArgv[1]);
-        KGLOG_PROCESS_ERROR(nRetCode);
-#endif 
+        for (std::vector<std::string>::iterator itVector = m_szFileList.begin(); itVector != m_szFileList.end(); ++itVector)
+        {
+            printf("%s\n", itVector->c_str());
+        }
 
         if (bIsSunday)
         {
@@ -143,67 +143,59 @@ int KParameterAnalysis::GetOption(int argc, char* argv[], struct option* pLongOp
         goto Exit0;
     }
 
-    if (nOptind == 1)
+    nResult = nOptind;
+
+    if (nOptind == 1 && strncmp(argv[nOptind], "--", 2) == 0)
     {
-        if (strncmp(argv[nOptind], "--", 2) == 0)
+        bool bIsEqual = false;
+        for (const struct option *i = pLongOptions; i->pszName; ++i)
         {
-            int nArgvLen = 0;
-            for (const struct option *i = pLongOptions; i->pszName; ++i)
+            if (strcmp(i->pszName, argv[nOptind] + 2) == 0)
             {
-                nArgvLen = strlen(i->pszName);
-                if (strncmp(i->pszName, argv[nOptind] + 2, nArgvLen - 2) == 0)
-                {
-                    nResult = i->nVal;
-                    break;
-                }
+                bIsEqual = true;
+                nResult = i->nVal;
+                break;
             }
         }
 
-        if (nResult == -1)
+        if (!bIsEqual)
         {
             nResult = '?';
         }
-    }
-    else
-    {
-        nResult = nOptind;
     }
 
 Exit0:
     return nResult;
 }
 
-void KParameterAnalysis::OutHelp()
+void KParameterAnalysis::Output()
 {
     printf("Usage: SearchKey OPTION KeyWord File\n"
         "Search for KeyWord in File\n"
-        "Example: ./SearchKey --sunday KGLOG ..\\Debug\\testLog\\NormalFile.log\n\n"
+        "Example: ./SearchKey --sunday KGLOG ..\\Debug\\testLog\\GeneralFile.log\n\n"
         "Pattern selection and interpretation::\n"
         "--help\t\tdisplay this help text and exit\n"
         "--sunday\tsearch by sunday algorithm\n"
     );
 }
 
-#ifdef linux
-bool KParameterAnalysis::GetLinuxFile(char* pszPath)
+bool KParameterAnalysis::GetFiles(char* pszPath)
 {
-    bool                    bResult     = false;
-    int                     nRetCode    = 0;
-    char*                   pszNextPath = NULL;
-    std::string             szTempPath  = NULL;
-    struct dirent*          pFileInfo   = NULL;
-    DIR*                    pDir;
-    struct stat             statBuff;
-    std::queue<std::string> DirectoryQueue;
+    bool bResult = false;
 
-    pFileInfo = new struct dirent;
-    KGLOG_PROCESS_ERROR(pFileInfo);
+#ifdef linux
+    int                     nRetCode       = 0;
+    int                     nFileSuffixLen = MAX_FILE_SUFFIX_LEN;
+    std::string             szTempPath     = NULL;
+    char                    szFileSuffix[MAX_FILE_SUFFIX_LEN + 1];
+    char                    szNextPath[MAX_PATH_LEN];
+    DIR                     Dir;
+    struct stat             statBuff;
+    struct dirent           FileInfo;
+    std::queue<std::string> DirectoryQueue;
 
     nRetCode = stat(pszPath, &statBuff);
     KGLOG_PROCESS_ERROR(nRetCode == 0);
-
-    pszNextPath = new char[MAX_PATH_LEN];
-    KGLOG_PROCESS_ERROR(pszNextPath);
 
     if (S_ISDIR(statBuff.st_mode))
     {
@@ -216,134 +208,116 @@ bool KParameterAnalysis::GetLinuxFile(char* pszPath)
 
     while (!DirectoryQueue.empty())
     {
-        szTempPath = DirectoryQueue.front();
-        DirectoryQueue.pop();
-
-        pDir = opendir(szTempPath.c_str());
-        if (pDir == NULL)
+        Dir = opendir(DirectoryQueue.front().c_str());
+        if (Dir == NULL)
         {
-            closedir(pDir);
-            break;
+            closedir(Dir);
+            DirectoryQueue.pop();
+            continue;
         }
 
         while (true)
         {
-            pFileInfo = readdir(pDir);
+            FileInfo = readdir(Dir);
 
-            if (!pFileInfo)
+            if (!FileInfo)
             {
                 break;
             }
 
-            sprintf(pszNextPath, "%s/%s", szTempPath.c_str(), pFileInfo->d_name);
-            pszNextPath[strlen(pszNextPath)] = '\0';
-
-            if (strcmp(pFileInfo->d_name, ".") == 0 || strcmp(pFileInfo->d_name, "..") == 0)
+            if (strcmp(FileInfo->d_name, ".") == 0 || strcmp(FileInfo->d_name, "..") == 0)
             {
                 continue;
             }
 
-            if (pFileInfo->d_type == DT_REG)
+            snprintf(szNextPath, sizeof(szNextPath), "%s/%s", DirectoryQueue.front().c_str(), FileInfo->d_name);
+            szNextPath[sizeof(szNextPath) - 1] = '\0';
+
+            if (FileInfo->d_type == DT_DIR)
             {
-                m_szFileList.push_back(pszNextPath);
+                DirectoryQueue.push(szNextPath);
             }
-            else if (pFileInfo->d_type == DT_DIR)
+            else
             {
-                DirectoryQueue.push(pszNextPath);
+                bool bIsFileSuffix    = true;
+                int  nFileDataNameLen = strlen(FileInfo.name);
+                for (int i = nFileDataNameLen - 1, j = nFileSuffixLen - 1; i >= 0 && j >= 0; --i, --j)
+                {
+                    if (FileInfo.name[i] != szFileSuffix[j])
+                    {
+                        bIsFileSuffix = false;
+                        break;
+}
+                }
+
+                if (bIsFileSuffix)
+                {
+                    m_szFileList.push_back(szNextPath);
+                }
             }
         }
-        closedir(pDir);
+        closedir(Dir);
+        DirectoryQueue.pop();
     }
-
-    bResult = true;
-Exit0:
-    if (pszNextPath)
-    {
-        delete []pszNextPath;
-        pszNextPath = NULL;
-    }
-
-    if (pFileInfo)
-    {
-        delete pFileInfo;
-        pFileInfo = NULL;
-    }
-
-    return bResult;
-}
 #else
-bool KParameterAnalysis::GetWindowsFiles(char* pszPath)
-{
-    bool                     bResult          = false;
-    int                      nFindHandle      = 0;
-    int                      nFileSuffixLen   = 0;
-    char*                    pszIndex         = NULL;
-    char*                    pszTempPath      = NULL;
-    char*                    pszFileSuffix    = NULL;
-    char*                    pszDirectoryPath = NULL;
-    std::string              szTempPath       = "";
+    int                      nFindHandle    = 0;
+    int                      nFileSuffixLen = MAX_FILE_SUFFIX_LEN;
+    char                     szTempPath[MAX_PATH_LEN];
+    char                     szFileSuffix[MAX_FILE_SUFFIX_LEN + 1];
     _finddata_t              FileData;
     std::queue<std::string>  DirectoryQueue;
 
     KGLOG_PROCESS_ERROR(pszPath);
 
-    pszTempPath = new char[MAX_PATH_LEN];
-    KGLOG_PROCESS_ERROR(pszTempPath);
-
-    pszIndex = new char[MAX_PATH_LEN];
-    KGLOG_PROCESS_ERROR(pszIndex);
-
-    pszDirectoryPath = new char[MAX_PATH_LEN];
-    KGLOG_PROCESS_ERROR(pszDirectoryPath);
-
-    pszFileSuffix = new char[MAX_FILE_SUFFIX_LEN];
-    KGLOG_PROCESS_ERROR(pszFileSuffix);
-
-    strcpy(pszFileSuffix, "log");
-    nFileSuffixLen = strlen(pszFileSuffix);
-    pszFileSuffix[nFileSuffixLen] = '\0';
+    strcpy(szFileSuffix, "log");
+    szFileSuffix[nFileSuffixLen] = '\0';
 
     nFindHandle = _findfirst(pszPath, &FileData);
     KGLOG_PROCESS_ERROR(nFindHandle != -1);
 
-    if (FileData.attrib == _A_ARCH)
-    {
-        m_szFileList.push_back(pszPath);
-    }
-    else if (FileData.attrib == _A_SUBDIR)
+    if (FileData.attrib & _A_SUBDIR)
     {
         DirectoryQueue.push(pszPath);
+    }
+    else
+    {
+        m_szFileList.push_back(pszPath);
     }
 
     while (!DirectoryQueue.empty())
     {
-        strcpy(pszIndex, DirectoryQueue.front().c_str());
-        pszIndex[strlen(pszIndex)] = '\0';
-        DirectoryQueue.pop();
+        snprintf(szTempPath, sizeof(szTempPath), "%s\\*", DirectoryQueue.front().c_str());
+        szTempPath[sizeof(szTempPath) - 1] = '\0';
 
-        sprintf(pszDirectoryPath, "%s\\*", pszIndex);
-        pszDirectoryPath[strlen(pszDirectoryPath)] = '\0';
+        nFindHandle = _findfirst(szTempPath, &FileData);
+        if (nFindHandle == -1)
+        {
+            _findclose(nFindHandle);
+            DirectoryQueue.pop();
+            continue;
+        }
 
-        nFindHandle = _findfirst(pszDirectoryPath, &FileData);
-        while (_findnext(nFindHandle, &FileData) == 0)
+        do
         {
             if (strcmp(FileData.name, ".") == 0 || strcmp(FileData.name, "..") == 0)
             {
                 continue;
             }
 
-            sprintf(pszTempPath, "%s\\%s", pszIndex, FileData.name);
-            pszTempPath[strlen(pszTempPath)] = '\0';
+            snprintf(szTempPath, sizeof(szTempPath), "%s\\%s", DirectoryQueue.front().c_str(), FileData.name);
+            szTempPath[sizeof(szTempPath) - 1] = '\0';
 
-            szTempPath = pszTempPath;
-
-            if (FileData.attrib == _A_ARCH)
+            if (FileData.attrib & _A_SUBDIR)
             {
-                bool bIsFileSuffix = true;
+                DirectoryQueue.push(szTempPath);
+            }
+            else
+            {
+                bool bIsFileSuffix    = true;
                 int  nFileDataNameLen = strlen(FileData.name);
-                for (int i = nFileDataNameLen - nFileSuffixLen, j = 0; i < nFileDataNameLen; ++i, ++j)
+                for (int i = nFileDataNameLen - 1, j = nFileSuffixLen - 1; i >= 0 && j >= 0; --i, --j)
                 {
-                    if (FileData.name[i] != pszFileSuffix[j])
+                    if (FileData.name[i] != szFileSuffix[j])
                     {
                         bIsFileSuffix = false;
                         break;
@@ -352,53 +326,25 @@ bool KParameterAnalysis::GetWindowsFiles(char* pszPath)
 
                 if (bIsFileSuffix)
                 {
-                    m_szFileList.push_back(pszTempPath);
+                    m_szFileList.push_back(szTempPath);
                 }
             }
-            else if (FileData.attrib == _A_SUBDIR)
-            {
-                DirectoryQueue.push(szTempPath);
-            }
-        }
+        } while (_findnext(nFindHandle, &FileData) == 0);
+
         _findclose(nFindHandle);
+        DirectoryQueue.pop();
     }
+#endif
 
     bResult = true;
 Exit0:
     if (!bResult)
     {
-        std::vector <std::string>().swap(m_szFileList);
+        m_szFileList.clear();
     }
 
-    if (pszFileSuffix)
-    {
-        delete []pszFileSuffix;
-        pszFileSuffix = NULL;
-    }
-
-    if (pszDirectoryPath)
-    {
-        delete []pszDirectoryPath;
-        pszDirectoryPath = NULL;
-    }
-
-    if (pszIndex)
-    {
-        delete []pszIndex;
-        pszIndex = NULL;
-    }
-
-    if (pszTempPath)
-    {
-        delete []pszTempPath;
-        pszTempPath = NULL;
-    }
-
-    return bResult;
+    bResult = false;
 }
-#endif
-
-
 
 bool KParameterAnalysis::Sunday(char* pszKeyWord, const char* pszFilePath)
 {

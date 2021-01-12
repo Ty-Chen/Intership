@@ -18,9 +18,10 @@ public:
     bool CommandInput(int argc, char* argv[]);
 private:
     int  GetOption(int argc, char* argv[], struct option* pLongOptions, int nOptind);
-    void OutHelp();
+    void Output();
     bool GetWindowsFiles(char* pszDirectoryPath);
-    bool GetLinuxFile(char* pszPath);
+    bool GetLinuxFiles(char* pszPath);
+    bool GetFiles(char* pszPath);
     bool Sunday(char* pszKeyWord, const char* pszFilePath);
 private:
     std::vector<std::string> m_szFileList;
