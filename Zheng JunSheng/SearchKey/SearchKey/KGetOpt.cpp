@@ -14,7 +14,7 @@ KGetOpt::~KGetOpt()
 }
 
 int KGetOpt::GetOptLong(
-    int argc, char* argv[], const struct option* pLongOpts
+    int argc, char* argv[], const struct option* pLongOptions
 )
 {
     int nResult = -1;
@@ -23,7 +23,7 @@ int KGetOpt::GetOptLong(
 
     KGLOG_PROCESS_ERROR(argc < 5);
     KGLOG_PROCESS_ERROR(argv);
-    KGLOG_PROCESS_ERROR(pLongOpts);
+    KGLOG_PROCESS_ERROR(pLongOptions);
 
     if (argc == 1)
     {
@@ -46,7 +46,7 @@ int KGetOpt::GetOptLong(
             nIndex = 1;
         }
 
-        for (const struct option *i = pLongOpts; i->pszName; ++i)
+        for (const struct option *i = pLongOptions; i->pszName; ++i)
         {
             if (strncmp(i->pszName, argv[1] + nIndex, nArgv1Len - nIndex) == 0)
             {

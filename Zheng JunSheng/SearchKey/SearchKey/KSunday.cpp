@@ -1,10 +1,11 @@
 #include "KSunday.h"
 
 #include <stdio.h>
+#include <string.h>
 
 KSunday::KSunday()
 {
-    m_nKeyLen = 0;
+    m_nKeyLen    = 0;
     m_pszKeyWord = NULL;
 }
 
@@ -53,13 +54,11 @@ bool KSunday::Run(unsigned char* pszText, int nTextLen)
     int   nTextPos   = 0;
     int   nCntResult = 0;
     int   nResultLen = 0;
-    char* pszResult  = NULL;
 
     KGLOG_PROCESS_ERROR(pszText);
     KGLOG_PROCESS_ERROR(nTextLen > 0);
 
-    pszResult = new char[nTextLen + 1];
-    KGLOG_PROCESS_ERROR(pszResult);
+    memset(m_pszResult, '\0', sizeof(m_pszResult));
 
     while (nTextPos <= nTextLen - m_nKeyLen)
     {
@@ -86,18 +85,18 @@ bool KSunday::Run(unsigned char* pszText, int nTextLen)
             ++nIndex;
             while (nIndex < nTextLen)
             {
-                pszResult[nResultLen++] = pszText[nIndex];
+                m_pszResult[nResultLen++] = pszText[nIndex];
 
                 if (pszText[nIndex] == '\r')
                 {
-                    pszResult[nResultLen - 1] = '\n';
-                    nTextPos = nIndex;
+                    m_pszResult[nResultLen - 1] = '\n';
+                    nTextPos = nIndex + 1;
                     break;
                 }
 
                 if (pszText[nIndex] == '\n' || nIndex == nTextLen - 1)
                 {
-                    nTextPos = nIndex;
+                    nTextPos = nIndex + 1;
                     break;
                 }
 
@@ -109,20 +108,14 @@ bool KSunday::Run(unsigned char* pszText, int nTextLen)
             nTextPos += m_nSunday[pszText[nTextPos + m_nKeyLen]];
         }
     }
-    pszResult[nResultLen] = '\0';
+    m_pszResult[nResultLen] = '\0';
 
     m_nCntResult += nCntResult;
 
-    fwrite(pszResult, 1, nResultLen, stdout);
+    fwrite(m_pszResult, 1, nResultLen, stdout);
     fflush(stdout);
 
     bResult = true;
 Exit0:
-    if (pszResult)
-    {
-        delete []pszResult;
-        pszResult = NULL;
-    }
-
     return bResult;
 }

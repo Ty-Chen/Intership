@@ -21,6 +21,8 @@
 #define MAX_LINE_LEN 1024
 #define TEST_MAX_NUM 30
 #define TEST_RESULT_PATH "..\\Debug\\testResult.txt"
+#define MAX_FILE_SUFFIX_LEN 10
+#define MAX_ARGV_NUM 4
 
 #endif
 

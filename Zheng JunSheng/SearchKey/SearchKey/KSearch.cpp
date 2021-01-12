@@ -39,7 +39,7 @@ Exit0:
 
 void KSearch::UnInit()
 {
-    m_nKeyLen     = NULL;
+    m_nKeyLen     = 0;
     m_nCntResult  = 0;
     m_pszKeyWord  = NULL;
     m_pszFilePath = NULL;
@@ -51,7 +51,6 @@ bool KSearch::RunSunday()
     int      nRetCode      = 0;
     int      nOffset       = 0;
     int      nReadBuffLen  = 0;
-    bool     bIsFinishFile = false;
     char*    pszReadBuff   = NULL;
     FILE*    fpFile        = NULL;
     KSunday* pSunday       = NULL;
@@ -79,8 +78,7 @@ bool KSearch::RunSunday()
             break;
         }
 
-        bIsFinishFile = feof(fpFile);
-        if (pszReadBuff[nReadBuffLen - 1] != '\n' && !bIsFinishFile)
+        if (nReadBuffLen == MAX_BUFFER && pszReadBuff[nReadBuffLen - 1] != '\n')
         {
             for (int i = nReadBuffLen - 1; i >= 0; --i)
             {
@@ -98,11 +96,6 @@ bool KSearch::RunSunday()
 
         nRetCode = pSunday->Run((unsigned char*)pszReadBuff, nReadBuffLen);
         KGLOG_PROCESS_ERROR(nRetCode > 0);
-
-        if (bIsFinishFile)
-        {
-            break;
-        }
     }
 
     m_nCntResult = pSunday->m_nCntResult;

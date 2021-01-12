@@ -24,5 +24,7 @@ private:
     unsigned char* m_pszKeyWord;
 
     int m_nSunday[ASCII_SIZE];
+
+    char m_pszResult[MAX_BUFFER + 1];
 };
 #endif
