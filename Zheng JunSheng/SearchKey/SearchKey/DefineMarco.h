@@ -16,12 +16,13 @@
     } WHILE_FALSE_NO_WARNING
 
 #define ASCII_SIZE 256
-#define MAX_PATH_LEN 1000
+#define MAX_PATH_LEN 1024
+#define MAX_TEMP_PATH_LEN 20
 #define MAX_BUFFER 1024 * 1024 * 50
 #define MAX_LINE_LEN 1024
 #define TEST_MAX_NUM 30
 #define TEST_RESULT_PATH "..\\Debug\\testResult.txt"
-#define MAX_FILE_SUFFIX_LEN 3
+#define MAX_FILE_SUFFIX_LEN 4
 #define MAX_ARGV_NUM 4
 
 #endif

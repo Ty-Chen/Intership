@@ -51,6 +51,7 @@ void KSunday::UnInit()
 bool KSunday::Run(unsigned char* pszText, int nTextLen)
 {
     bool  bResult    = false;
+    int   nRetcode   = 0;
     int   nTextPos   = 0;
     int   nCntResult = 0;
     int   nResultLen = 0;
@@ -112,8 +113,8 @@ bool KSunday::Run(unsigned char* pszText, int nTextLen)
 
     m_nCntResult += nCntResult;
 
-    fwrite(m_pszResult, 1, nResultLen, stdout);
-    fflush(stdout);
+    nRetcode = fwrite(m_pszResult, 1, nResultLen, stdout);
+    KGLOG_PROCESS_ERROR(nRetcode == nResultLen);
 
     bResult = true;
 Exit0:
