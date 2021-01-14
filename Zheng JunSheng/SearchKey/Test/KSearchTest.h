@@ -1,7 +1,7 @@
 #ifndef _KSEARCHTEST_H_
 #define _KSEARCHTEST_H_
 
-#include "DefineMarco.h"
+#include "..\SearchKey\DefineMarco.h"
 
 class KSearchTest
 {

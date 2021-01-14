@@ -48,12 +48,12 @@ bool KSearchTest::Run(char* pszTestKeyWordPath, char* pszTestTxtPath)
                 szTestFileType[j], szTestKeyWord[i]
             );
 
-           snprintf(szSystemCommand, sizeof(szSystemCommand),
+            snprintf(szSystemCommand, sizeof(szSystemCommand),
                 "..\\Debug\\SearchKey.exe %s %s > %s",
-               szTestKeyWord[i], szTestFilePath[j], szResultPath
+                szTestKeyWord[i], szTestFilePath[j], szResultPath
             );
 
-           system(szSystemCommand);
+            system(szSystemCommand);
         }
     }
 

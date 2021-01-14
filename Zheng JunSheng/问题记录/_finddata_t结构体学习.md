@@ -36,6 +36,8 @@ struct _finddata64i32_t
 #define _A_ARCH   0x20 // Archive file
 ```
 
+文件可能会有多种属性，那么attrib会按照位或的方式来获得文件的综合属性。例如：只读+隐藏+系统属性，应该为：`_A_HIDDEN | _A_RDONLY | _A_SYSTEM` 。所以在判断时，要仔细考虑使用`&`还是`==`。
+
 time_create是创建文件的时间。
 
 time_access是最后一次访问文件的时间。

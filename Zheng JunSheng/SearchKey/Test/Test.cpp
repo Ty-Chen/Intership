@@ -7,8 +7,8 @@
 
 int main(int argc, char* argv[])
 {
-    bool                bResult            = false;
-    int                 nRetCode           = 0;
+    bool                bResult = false;
+    int                 nRetCode = 0;
     KParameterAnalysis* pParameterAnalysis = NULL;
 
     KGLOG_PROCESS_ERROR(argc);
@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
     pParameterAnalysis = new KParameterAnalysis();
     KGLOG_PROCESS_ERROR(pParameterAnalysis);
 
-    nRetCode = pParameterAnalysis->CommandInput(argc, argv);
+    nRetCode = pParameterAnalysis->GetOption(argc, argv);
     KGLOG_PROCESS_ERROR(nRetCode);
 
     bResult = true;

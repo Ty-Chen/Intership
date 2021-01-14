@@ -11,7 +11,7 @@ static unsigned long long FileTimeToUTC(FILETIME* ftime)
     LARGE_INTEGER li;
 
     assert(ftime);
-    li.LowPart = ftime->dwLowDateTime;
+    li.LowPart  = ftime->dwLowDateTime;
     li.HighPart = ftime->dwHighDateTime;
     return li.QuadPart;
 }

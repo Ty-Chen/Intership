@@ -8,7 +8,10 @@
 
 KSearch::KSearch()
 {
-
+    m_nKeyLen     = 0;
+    m_nCntResult  = 0;
+    m_pszKeyWord  = NULL;
+    m_pszFilePath = NULL;
 }
 
 KSearch::~KSearch()
@@ -47,13 +50,13 @@ void KSearch::UnInit()
 
 bool KSearch::RunSunday()
 {
-    bool     bResult       = false;
-    int      nRetCode      = 0;
-    int      nOffset       = 0;
-    int      nReadBuffLen  = 0;
-    char*    pszReadBuff   = NULL;
-    FILE*    fpFile        = NULL;
-    KSunday* pSunday       = NULL;
+    bool     bResult      = false;
+    int      nRetCode     = 0;
+    int      nOffset      = 0;
+    int      nReadBuffLen = 0;
+    char*    pszReadBuff  = NULL;
+    FILE*    fpFile       = NULL;
+    KSunday* pSunday      = NULL;
 
     fpFile = fopen(m_pszFilePath, "rb");
     KGLOG_PROCESS_ERROR(fpFile);

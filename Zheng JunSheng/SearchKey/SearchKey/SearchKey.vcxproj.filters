@@ -18,33 +18,27 @@
     <ClCompile Include="SearchKey.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="KParameterAnalysis.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="KSunday.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="KSearch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="KParameterAnalysis.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="KGetOpt.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="KSunday.h">
+    <ClInclude Include="KParameterAnalysis.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="DefineMarco.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="KSunday.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="KSearch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="KParameterAnalysis.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="KGetOpt.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

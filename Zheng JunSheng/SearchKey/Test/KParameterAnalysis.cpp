@@ -15,10 +15,10 @@ KParameterAnalysis::~KParameterAnalysis()
 
 }
 
-bool KParameterAnalysis::CommandInput(int argc, char* argv[])
+bool KParameterAnalysis::GetOption(int argc, char* argv[])
 {
-    bool         bResult     = false;
-    int          nRetCode    = 0;
+    bool         bResult = false;
+    int          nRetCode = 0;
     KSearchTest* pSearchTest = NULL;
 
     KGLOG_PROCESS_ERROR(argc);
