@@ -10,6 +10,8 @@
 #endif
 
 #include<string.h>
+#include<stdlib.h>
+#include<stdio.h>
 
 #include<iostream>
 #include<vector>
@@ -49,7 +51,7 @@ bool KOperation::CommandInput(int argc, char* argv[])
     char* pszPattern  = NULL;
     char* pszTestPath = NULL;
 
-    nRestultChar = Getopt(argc, argv, "hp:f:", nIndex);
+    nRestultChar = Getopt(argc, argv, "hp:f:s:", nIndex);
 
     while (nRestultChar != -1)
     {
@@ -74,10 +76,11 @@ bool KOperation::CommandInput(int argc, char* argv[])
     if (bIsHelp && !pszTestPath && !pszPattern)
     {
         printf(
-            "usage: Search  KeyWord LogPath\n"
-            "sample: Search -pKGLOG  -fE:/TestText/Log\n"
-            "\nexplain:\n"
-            "Two parameters, the first for the query keyword, the second for the query text path\n"
+            "usage: Search KeyWord LogPath\n"
+            "sample: Search -pKGLOG -fE:\\TestText\\Log \n"
+            "\nsample: Search -pKGLOG -fE:\\TestTextLog\\*.log\n"
+            "\nsample: Search -pKGLOG -fE:\\TestText\\other\\Big_Size.txt\n"
+            "\n If run it under Linux,replace '\' to '/'\n"
         );
     }
     else if (pszTestPath && pszPattern && !bIsHelp)
@@ -101,14 +104,14 @@ Exit0:
     return bResult;
 }
 
-int KOperation:: Getopt(int argc, char* argv[], const char* pszOpstrintg, int nIndex)
+int KOperation::Getopt(int argc, char* argv[], const char* pszOpstring, int nIndex)
 {
     bool bResult              = false;
     int  nCommandChar         = 0;
     char* pParameterStart     = NULL;
 
     KGLOG_PROCESS_ERROR(argv);
-    KGLOG_PROCESS_ERROR(pszOpstrintg);
+    KGLOG_PROCESS_ERROR(pszOpstring);
 
     if (nIndex >= argc || argv[nIndex][0] != '-' || argv[nIndex][1] == '\0' || argv[nIndex][1] == ':')
     {
@@ -117,7 +120,7 @@ int KOperation:: Getopt(int argc, char* argv[], const char* pszOpstrintg, int nI
 
     nCommandChar = argv[nIndex][1];
 
-    pParameterStart = (char*)strchr(pszOpstrintg, (char)nCommandChar);
+    pParameterStart = (char*)strchr(pszOpstring, (char)nCommandChar);
 
     if (pParameterStart == NULL)
     {
@@ -175,27 +178,27 @@ bool KOperation::Search(unsigned char* pszPattern, char* pszSourcePath)
     bRetCode = GetFiles(szSourcePath);
     KGLOG_PROCESS_ERROR(bRetCode);
 
-    nFileCount = m_szFileList.size();
+    nFileCount = (int)m_szFileList.size();
     if (nFileCount == 0)
     {
         printf("File does Exist\n");
     }
-
-    KGLOG_PROCESS_ERROR(nFileCount > 0);
 
     for (int i = 0; i < nFileCount; i++)
     {
         printf("%s\n", m_szFileList[i].c_str());
     }
 
-    /*for (int i = 0; i < nFileCount; i++)
+    KGLOG_PROCESS_ERROR(nFileCount > 0);
+
+    for (int i = 0; i < nFileCount; i++)
     {
         int nMatchCount = 0;
         nMatchCount = pBlockMatch->MatchWords(
             pszPattern, m_szFileList[i]
             );
         KGLOG_PROCESS_ERROR(nMatchCount >= 0);
-    }*/
+    }
 
     bResult = true;
 Exit0:
@@ -211,43 +214,47 @@ Exit0:
 
 bool KOperation::GetFiles(std::string szPath)
 {
-    bool bResult              = false;
-    int  nRetCode             = 0;
-    std::string szFullCommand = "";
-    FILE* fpFile              = NULL;
-    char szFilePath[MAX_LINE];
-    char TerminationChar;
+    bool        bResult              = false;
+    int         nRetCode             = 0;
+    char        szFullCommand [MAX_LINE];
+    std::string szSuffix             = "*";
+    FILE*       fpFile               = NULL;
+    char        szFilePath[MAX_LINE + 2];
 
 #if WIN32
-    szFullCommand = "dir /s /b ";
-    szFullCommand.append(szPath + " | findstr / log > File.txt");
-    TerminationChar = '\r';
+    snprintf(szFullCommand, MAX_LINE, "dir %s /a-d /s /b > File.txt", szPath.c_str());
 #else
-    szFullCommand = "find ";
-    szFullCommand.append(szPath + "  | grep  \"\.log\" > File.txt");
-    TerminationChar = '\n';
+    int         nDotIndex      = 0;
+    int         nDiagonalIndex = 0;
+
+    nDotIndex      = (int)szPath.rfind(".");
+    nDiagonalIndex = (int)szPath.rfind("/");
+
+    if (nDotIndex >= 0 && nDiagonalIndex >= 0 && nDotIndex - nDiagonalIndex == 2 && szPath[nDiagonalIndex + 1] == '*')
+    {
+        szSuffix.assign(szPath.begin() + nDiagonalIndex + 1, szPath.end());
+        szPath.assign(szPath.begin(), szPath.begin() + nDiagonalIndex);
+    }
+
+    snprintf(szFullCommand, MAX_LINE, "find %s -type f -name \"%s\" > File.txt", szPath.c_str(), szSuffix.c_str());
 #endif
 
-    nRetCode = std::system(szFullCommand.c_str());
+    nRetCode = std::system(szFullCommand);
     KGLOG_PROCESS_ERROR(nRetCode >= 0);
 
-    fpFile = fopen("File.txt", "rb");
+    fpFile = fopen("File.txt", "r");
     KGLOG_PROCESS_ERROR(fpFile);
-    while (fgets(szFilePath, MAX_LINE + 1, fpFile))
-    {
-        int         nFileNameLen   = strlen(szFilePath);
-        std::string szFullFilePath = "";
 
-        for (int i = nFileNameLen - 1; i >= 0; i--)
+    while (fgets(szFilePath, MAX_LINE + 2, fpFile))
+    {
+        int nFileNameLen = (int)strlen(szFilePath);
+
+        if (szFilePath[nFileNameLen - 1] == '\n')
         {
-            if (szFilePath[i] == TerminationChar)
-            {
-                szFilePath[i] = '\0';
-            }
+            szFilePath[nFileNameLen - 1] = '\0';
         }
 
-        szFullFilePath.append(szFilePath);
-        m_szFileList.push_back(szFullFilePath);
+        m_szFileList.push_back(szFilePath);
     }
 
     bResult = true;

@@ -6,7 +6,7 @@ ls -R的功能是输出文件夹下的所有文件名，与大多数C/C++ 程序
 
 ## main函数的分析
 
-```
+```c
 main (int argc, char **argv)
 {
   register int i;
@@ -16,7 +16,7 @@ main (int argc, char **argv)
 
 随后对参数进行分析：i = decode_switches (argc, argv)。分析参数时运用了Linux中比较常用的命令解析函数getopt()
 
-```
+```c
 while ((c = getopt_long (argc, argv,
 			   "abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UX1",
 			   long_options, NULL)) != -1)
@@ -53,7 +53,7 @@ while ((c = getopt_long (argc, argv,
 
 这是pending结构体的定义
 
-```
+```c
 struct pending
   {
     char *name;
@@ -68,7 +68,7 @@ struct pending
 
 这是截取print_dir函数的一个片段
 
-```
+```c
 print_dir (const char *name, const char *realname)
 {
   register DIR *dirp;
@@ -83,7 +83,7 @@ errno = 0;
     {
       /* Set errno to zero so we can distinguish between a readdir failure
 	 and when readdir simply finds that there are no more entries.  
-      errno = 0;
+      errno = 0;*/
       if ((next = readdir (dirp)) == NULL)
 	{
 	  if (errno)
@@ -120,7 +120,7 @@ if (recursive)
 
 ## extract_dirs_from_files函数的分析
 
-```
+```c
 extract_dirs_from_files (const char *dirname, int ignore_dot_and_dot_dot)
 {
   register int i, j;
@@ -155,7 +155,7 @@ for (i = files_index - 1; i >= 0; i--)
 
 ## queue_directory函数的分析
 
-```
+```c
 queue_directory (const char *name, const char *realname)
 {
   struct pending *new;
