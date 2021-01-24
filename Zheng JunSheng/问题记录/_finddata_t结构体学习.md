@@ -6,7 +6,7 @@
 
 ## 2.结构体分析
 
-```
+```c
 #define _finddata_t     _finddata64i32_t
 
 typedef __int64  __time64_t;
@@ -27,7 +27,7 @@ struct _finddata64i32_t
 
 `attrib` 是所查询的文件属性（`_A_NORMAL`，`_A_RDONLY`，`_A_HIDDEN`，`_A_SYSTEM`，_`A_SUBDIR`，`_A_ARCH`）。
 
-```
+```c
 #define _A_NORMAL 0x00 // Normal file - No read/write restrictions
 #define _A_RDONLY 0x01 // Read only file
 #define _A_HIDDEN 0x02 // Hidden file
@@ -52,7 +52,7 @@ name是文件名。
 
 ### 3.1_findfirst 
 
-```
+```c
 intptr_t _findfirst(
 	const char *filespec,
 	struct _finddata_t *fileinfo
@@ -67,7 +67,7 @@ intptr_t _findfirst(
 
 ### 3.2_findnext
 
-```
+```c
 int _findnext(
    intptr_t handle,
    struct _finddata_t *fileinfo 
@@ -82,7 +82,7 @@ int _findnext(
 
 ### 3.3_findclose
 
-```
+```c
 int _findclose( 
    intptr_t handle 
 );

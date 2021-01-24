@@ -6,7 +6,7 @@
 
 ## 2.问题分析
 
-```
+```c
     char* fgets(
 		char* const string, 
 		int   const count, 
