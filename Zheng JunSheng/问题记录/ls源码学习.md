@@ -6,13 +6,13 @@
 
 语法：
 
-```
+```c
  ls [-alrtAFR] [name...]
 ```
 
 ## 2.源码分析
 
-```
+```c
 int
 main (int argc, char **argv)
 {
@@ -53,7 +53,7 @@ main (int argc, char **argv)
 
 在定义、初始化之后，先进行`decode_switches (argc, argv)`，这个函数会通过`getopt`来分析参数。
 
-```
+```c
 while ((c = getopt_long (argc, argv,
 			   "abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UX1",
 			   long_options, NULL)) != -1)
@@ -70,7 +70,7 @@ while ((c = getopt_long (argc, argv,
 
 在下来，我们可以看到一个while循环。其中`pending_dirs`是一个结构体链表，代表待执行的目录的记录表，等待被列出。
 
-```
+```c
 struct pending
   {
     char *name;
@@ -83,7 +83,7 @@ struct pending
 
 以下是`print_dir`代码中的一部分。
 
-```
+```c
 static void
 print_dir (const char *name, const char *realname)
 {

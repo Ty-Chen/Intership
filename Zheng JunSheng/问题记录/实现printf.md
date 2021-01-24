@@ -10,7 +10,7 @@
 
 ### 2.1va_list
 
-```
+```c
 typedef char* va_list; 
 ```
 
@@ -18,7 +18,7 @@ va_list为char\*类型重定义，所以va_list为一个指向char类型的指�
 
 ### 2.2va_start(ap,v)
 
-```
+```c
 #define va_start _crt_va_start
 #define _crt_va_start(ap,v) (ap=(va_list)_ADDRESSOF(v)+ _INTSIZEOF(V))
 ```
@@ -27,7 +27,7 @@ va_list为char\*类型重定义，所以va_list为一个指向char类型的指�
 
 ### 2.3va_arg(ap,t)
 
-```
+```c
 #define va_arg _crt_va_arg
 #define _crt_va_arg(ap,t) ( *(t *)((ap += _INTSIZEOF(t)) - _INTSIZEOF(t)) )
 ```
@@ -36,11 +36,11 @@ va_list为char\*类型重定义，所以va_list为一个指向char类型的指�
 
 下面假使t为一个int型变量，如下图分析：
 
-![img](C:\Users\ADMIN\Desktop\实现printf.assets\1272978-20171122173538774-669180204.png)
+![img](.\实现printf.assets\1272978-20171122173538774-669180204.png)
 
 ### 2.4va_end(ap)
 
-```
+```c
 #define va_end _crt_va_end
 #define _crt_va_end(ap) ( ap = (va_list)0 ) 
 ```
@@ -49,7 +49,7 @@ va_list为char\*类型重定义，所以va_list为一个指向char类型的指�
 
 ## 3.实现代码
 
-```
+```c
 #include<stdio.h>
 #include<assert.h>  
 #include<stdarg.h>
@@ -114,8 +114,10 @@ int main()
     MyPrintf("Output:>%f  %c%c %d %s", 3.14, 't', 'p', 1234, szStr);
     return 0;
 }
+/*
 输出结果：
 Output:>3.140000  tp 1234 hello world!
+*/
 ```
 
 ## 4.总结

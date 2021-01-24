@@ -8,7 +8,7 @@
 
 struct stat的成员变量：
 
-```
+```c
 struct stat
 {
 	__mode_t st_mode;          /* File mode.  */
@@ -27,7 +27,7 @@ struct stat
 
 st_mode
 
-```
+```c
 /* Encoding of the file mode.  These are the standard Unix values,
    but POSIX.1 does not specify what values should be used.  */
 
@@ -43,7 +43,7 @@ st_mode
 
 S_ISDIR、S_ISREG等定义
 
-```
+```c
 #define __S_ISTYPE(mode, mask)  (((mode) & __S_IFMT) == (mask))
  
 #define S_ISDIR(mode)    __S_ISTYPE((mode), __S_IFDIR)
@@ -54,7 +54,7 @@ S_ISDIR、S_ISREG等定义
 
 简单使用：
 
-```
+```c
 char*       pszFilePath;
 struct stat statBuff;
 if(stat(pszFilePath, &statBuff) != -1)

@@ -28,41 +28,45 @@ Notice that a non-member function exists with the same name, swap, overloading t
 
 测试`std::vector::clear()`
 
-    #include<iostream>
-    #include<vector>
-    
-    int main()
-    {
-        std::vector<int> TestVector;
-        TestVector.push_back(1);
-        TestVector.push_back(2);
-        TestVector.push_back(3);
-        TestVector.push_back(4);
-        TestVector.push_back(5);
-        printf("size: %d\n"
-            "capacity: %d\n",
-            TestVector.size(), TestVector.capacity()
-        );
-    
-        TestVector.clear();
-    
-        printf("after clear size: %d\n"
-            "after clear capacity: %d\n",
-            TestVector.size(), TestVector.capacity()
-        );
-    
-        return 0;
-    }
-    输出：
-    size: 5
-    capacity: 6
-    after clear size: 0
-    after clear capacity: 6
+```c
+#include<iostream>
+#include<vector>
+
+int main()
+{
+    std::vector<int> TestVector;
+    TestVector.push_back(1);
+    TestVector.push_back(2);
+    TestVector.push_back(3);
+    TestVector.push_back(4);
+    TestVector.push_back(5);
+    printf("size: %d\n"
+        "capacity: %d\n",
+        TestVector.size(), TestVector.capacity()
+    );
+
+    TestVector.clear();
+
+    printf("after clear size: %d\n"
+        "after clear capacity: %d\n",
+        TestVector.size(), TestVector.capacity()
+    );
+
+    return 0;
+}
+/*
+输出：
+size: 5
+capacity: 6
+after clear size: 0
+after clear capacity: 6
+*/
+```
 clear后，size变为了0，capacity没有变化。
 
 测试`std::vector::swap()`
 
-```
+```c
 #include <iostream>
 #include <vector>
 
@@ -99,6 +103,7 @@ int main()
 
     return 0;
 }
+/*
 输出：
 FirstVector size: 5
 FirstVector capacity: 6
@@ -108,13 +113,14 @@ after swap FirstVector size: 2
 after swap FirstVector capacity: 2
 after swap SecondVector size: 5
 after swap SecondVector capacity: 6
+*/
 ```
 
 swap之后，不仅仅是size变化了，capacity也是变化了。
 
 使用swap来替代clear()。
 
-```
+```c
 #include<iostream>
 #include<vector>
 
@@ -140,11 +146,13 @@ int main()
 
     return 0;
 }
+/*
 输出：
 size: 5
 capacity: 6
 after clear size: 0
 after clear capacity: 0
+*/
 ```
 
 ## 4.问题总结

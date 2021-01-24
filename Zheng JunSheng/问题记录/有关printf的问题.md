@@ -16,7 +16,7 @@
 
 ## 三.问题解决
 
-```
+```c
 int printf(const char *fmt, ...)
 {
 	char printf_buf[1024];
@@ -38,7 +38,7 @@ int printf(const char *fmt, ...)
 
 例如：
 
-```
+```c
 #include<iostream>
 #include<vector>
 
@@ -58,11 +58,13 @@ int main()
     test('a', 12, 23.4, &zNum4);
     return 0;
 }
+/*
 输出结果
 zNum1:006FF8E8
 nNum2:006FF8EC
 fNum3:006FF8F0
 pzNum4:006FF9CF
+*/
 ```
 
 从各个形参变量的地址可以看出它们地址大小确实是从右到左依次减小的，说明它们是从右到左压栈的。
