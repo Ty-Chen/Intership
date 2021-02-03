@@ -287,4 +287,7 @@ char *temp = my_index (optstring, c);
 
 ## 总结：
 
-getopt逻辑还是比较跳跃的，所以在写起来的时候显得有点乱，还有些细节方面没有做解析，至于getopt_long等下次再说了。
+getopt逻辑还是比较跳跃的，所以在写起来的时候显得有点乱，还有些细节方面没有做解析，至于getopt_long,请看下面的链接了。
+
+[Getopt_Long源码解析](Getopt_long 源码解析.md)
+
