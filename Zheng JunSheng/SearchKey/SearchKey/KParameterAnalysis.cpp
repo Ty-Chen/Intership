@@ -17,7 +17,6 @@ struct option
 struct option LongOptions[] =
 {
     {"help",   'h'},
-    {"sunday", 's'},
     {0, 0}
 };
 
@@ -50,7 +49,6 @@ bool KParameterAnalysis::CommandInput(int argc, char* argv[])
     int      nIllegalOptPos    = 0;
     int      nCntEffectiveArgv = 0;
     bool     bIsHelp           = false;
-    bool     bIsSunday         = false;
     bool     bIsIllegalOpt     = false;
     char*    pszEffectiveArgv[MAX_ARGV_NUM];
 
@@ -66,9 +64,6 @@ bool KParameterAnalysis::CommandInput(int argc, char* argv[])
         {
             case 'h':
                 bIsHelp = true;
-                break;
-            case 's':
-                bIsSunday = true;
                 break;
             case '?':
                 bIsIllegalOpt = true;
@@ -95,14 +90,11 @@ bool KParameterAnalysis::CommandInput(int argc, char* argv[])
         nRetCode = GetFiles(pszEffectiveArgv[1]);
         KGLOG_PROCESS_ERROR(nRetCode);
 
-        if (bIsSunday)
+        for (std::vector<std::string>::iterator itVector = m_szFileList.begin(); itVector != m_szFileList.end(); ++itVector)
         {
-            for (std::vector<std::string>::iterator itVector = m_szFileList.begin(); itVector != m_szFileList.end(); ++itVector)
-            {
-                printf("%s\n", itVector->c_str());
-                //nRetCode = Sunday(pszEffectiveArgv[0], itVector->c_str());
-                //KGLOG_PROCESS_ERROR(nRetCode);
-            }
+            printf("%s\n", itVector->c_str());
+            //nRetCode = Sunday(pszEffectiveArgv[0], itVector->c_str());
+            //KGLOG_PROCESS_ERROR(nRetCode);
         }
     }
     else
@@ -158,95 +150,67 @@ Exit0:
 
 void KParameterAnalysis::Output()
 {
-#ifdef WIN32
-    printf("Usage: SearchKey OPTION KeyWord File\n"
+    printf("Usage: SearchKey [OPTION] KeyWord File\n"
         "Search for KeyWord in File\n"
-        "Example: ./SearchKey --sunday KGLOG ..\\Debug\\testLog\\GeneralFile.log\n\n"
+        "Example: ./SearchKey KGLOG ..\\Debug\\testLog\\GeneralFile.log\n"
+        "If you query directories, you must enter the suffix name of the file you want to query\n"
+        "Example: ./SearchKey KGLOG ..\\Debug\\testLog\\*.log\n\n"
+        "If run it under Linux,replace '\\' to '/'\n"
+        "Example: ./SearchKey KGLOG \"../Debug/testLog/*.log\"\n\n"
         "Pattern selection and interpretation::\n"
         "--help\t\tdisplay this help text and exit\n"
-        "--sunday\tsearch by sunday algorithm\n"
     );
-#else
-    printf("Usage: SearchKey OPTION KeyWord File\n"
-        "Search for KeyWord in File\n"
-        "Example: ./SearchKey --sunday KGLOG ../Debug/testLog/GeneralFile.log\n\n"
-        "Pattern selection and interpretation::\n"
-        "--help\t\tdisplay this help text and exit\n"
-        "--sunday\tsearch by sunday algorithm\n"
-    );
-#endif
 }
 
 bool KParameterAnalysis::GetFiles(char* pszPath)
 {
     bool  bResult      = false;
     int   nRetCode     = 0;
-    int   nPathLen     = 0;
-    int   nSlashPos    = 0;
-    int   nPointPos    = 0;
     int   nReadBuffLen = 0;
-    bool  bIsPoint     = false;
     FILE* fpFile       = NULL;
-    char  szSystem[2 * MAX_PATH_LEN];
-    char  szReadBuff[MAX_PATH_LEN + 1];
-    char  szTempPath[MAX_PATH_LEN];
+    char  szSystem[MAX_PATH_LEN + MAX_PATH_LEN];
+    char  szReadBuff[MAX_PATH_LEN];
+#if !WIN32
+    int  nPathLen     = 0;
+    int  nStarPos     = -1;
+    int  nSlashPos    = -1;
+    bool bIsStar      = false;
+    bool bIsDirectory = false;
+#endif
 
     KGLOG_PROCESS_ERROR(pszPath);
 
+#if WIN32
+    snprintf(szSystem, sizeof(szSystem), "dir /a-d /b /s %s > FilePath.txt", pszPath);
+#else
     nPathLen = strlen(pszPath);
     KGLOG_PROCESS_ERROR(nPathLen > 0);
 
     for (int i = nPathLen - 1; i >= 0; --i)
     {
-        if (pszPath[i] == '.' && !bIsPoint)
+        if (!bIsStar && pszPath[i] == '*')
         {
-            bIsPoint = true;
-            nPointPos = i;
+            bIsStar = true;
+            nStarPos = i;
         }
 
-        if (pszPath[i] == '\\' || pszPath[i] == '/')
+        if (pszPath[i] == '/')
         {
             nSlashPos = i;
             break;
         }
     }
 
-    if (!bIsPoint || (bIsPoint && nPointPos < nSlashPos))
+    if (bIsStar && nSlashPos < nStarPos)
     {
-        if (pszPath[nSlashPos] == '\\')
-        {
-            if (nSlashPos == nPathLen - 1)
-            {
-                snprintf(szTempPath, sizeof(szTempPath), "%s*.log", pszPath);
-            }
-            else
-            {
-                snprintf(szTempPath, sizeof(szTempPath), "%s\\*.log", pszPath);
-            }
-        }
-        else
-        {
-            snprintf(szTempPath, sizeof(szTempPath), "%s", pszPath);
-        }
+        snprintf(szSystem, sizeof(szSystem), "find %.*s -type f -name \"%s\" > FilePath.txt", nPathLen - nSlashPos, pszPath, pszPath + nPathLen - nSlashPos);
     }
-    else if (bIsPoint && nPointPos > nSlashPos)
+    else
     {
-        if (pszPath[nSlashPos] == '/' && strcmp(pszPath + nSlashPos + 1, "*.log") == 0)
-        {
-            pszPath[nSlashPos + 1] = '\0';
-        }
-        snprintf(szTempPath, sizeof(szTempPath), "%s", pszPath);
-       
+        snprintf(szSystem, sizeof(szSystem), "find %s -type f > FilePath.txt", pszPath);
     }
-    szTempPath[sizeof(szTempPath) - 1] = '\0';
-
-#if WIN32
-    snprintf(szSystem, sizeof(szSystem), "dir /b /s %s > FilePath.txt", szTempPath);
-    szSystem[sizeof(szSystem) - 1] = '\0';
-#else
-    snprintf(szSystem, sizeof(szSystem), "find %s -type f -name *.log > FilePath.txt", szTempPath);
-    szSystem[sizeof(szSystem) - 1] = '\0';
 #endif
+    szSystem[sizeof(szSystem) - 1] = '\0';
 
     nRetCode = system(szSystem);
     KGLOG_PROCESS_ERROR(nRetCode >= 0);
@@ -254,22 +218,13 @@ bool KParameterAnalysis::GetFiles(char* pszPath)
     fpFile = fopen("FilePath.txt", "r");
     KGLOG_PROCESS_ERROR(fpFile);
 
-    while (fgets(szReadBuff, MAX_PATH_LEN + 1, fpFile))
+    while (fgets(szReadBuff, MAX_PATH_LEN, fpFile))
     {
         nReadBuffLen = strlen(szReadBuff);
-
-        if (szReadBuff[nReadBuffLen - 2] == '\r')
-        {
-            szReadBuff[nReadBuffLen - 2] = '\0';
-        }
 
         if (szReadBuff[nReadBuffLen - 1] == '\n')
         {
             szReadBuff[nReadBuffLen - 1] = '\0';
-        }
-        else
-        {
-            continue;
         }
 
         m_szFileList.push_back(szReadBuff);
