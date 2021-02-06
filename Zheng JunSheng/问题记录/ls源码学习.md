@@ -6,7 +6,7 @@
 
 语法：
 
-```c
+```shell
  ls [-alrtAFR] [name...]
 ```
 
@@ -49,7 +49,7 @@ main (int argc, char **argv)
  }
 ```
 
-以上就是ls main中大致的流程。
+以上就是`ls main`中大致的流程。
 
 在定义、初始化之后，先进行`decode_switches (argc, argv)`，这个函数会通过`getopt`来分析参数。
 
@@ -66,9 +66,9 @@ while ((c = getopt_long (argc, argv,
      
 ```
 
-其中`abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UX1`是ls命令后面可以跟的参数。`:`表示后面跟一个参数。在分析参数之后，会返回相对应的数值，而main也会根据这个数值来调用相对应的函数。
+其中`abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UX1`是`ls`命令后面可以跟的参数。`:`表示后面跟一个参数。在分析参数之后，会返回相对应的数值，而`main`也会根据这个数值来调用相对应的函数。
 
-在下来，我们可以看到一个while循环。其中`pending_dirs`是一个结构体链表，代表待执行的目录的记录表，等待被列出。
+在下来，我们可以看到一个`while`循环。其中`pending_dirs`是一个结构体链表，代表待执行的目录的记录表，等待被列出。
 
 ```c
 struct pending
@@ -126,8 +126,8 @@ print_dir (const char *name, const char *realname)
  }
 ```
 
-我们可以看到该函数使用了DIR以及`dirent`结构体，先用`opendir`函数来打开文件，再用`readdir`对当前目录下的文件进行查找，如果`readdir`函数返回值为NULL，则意味着查找结束，循环退出。每次查找完成之后，调用gobble_file函数将文件加入当前文件表中并返回文件数。
+我们可以看到该函数使用了`DIR`以及`dirent`结构体，先用`opendir`函数来打开文件，再用`readdir`对当前目录下的文件进行查找，如果`readdir`函数返回值为`NULL`，则意味着查找结束，循环退出。每次查找完成之后，调用`gobble_file`函数将文件加入当前文件表中并返回文件数。
 
 ## 3.总结
 
-ls命令很复杂，这里只分析了一部分，还需要继续研究ls源码。
+`ls`命令很复杂，这里只分析了一部分，还需要继续研究`ls`源码。

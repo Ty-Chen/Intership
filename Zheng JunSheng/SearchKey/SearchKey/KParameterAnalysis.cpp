@@ -92,9 +92,8 @@ bool KParameterAnalysis::CommandInput(int argc, char* argv[])
 
         for (std::vector<std::string>::iterator itVector = m_szFileList.begin(); itVector != m_szFileList.end(); ++itVector)
         {
-            printf("%s\n", itVector->c_str());
-            //nRetCode = Sunday(pszEffectiveArgv[0], itVector->c_str());
-            //KGLOG_PROCESS_ERROR(nRetCode);
+            nRetCode = Sunday(pszEffectiveArgv[0], itVector->c_str());
+            KGLOG_PROCESS_ERROR(nRetCode);
         }
     }
     else
@@ -156,6 +155,9 @@ void KParameterAnalysis::Output()
         "If you query directories, you must enter the suffix name of the file you want to query\n"
         "Example: ./SearchKey KGLOG ..\\Debug\\testLog\\*.log\n\n"
         "If run it under Linux,replace '\\' to '/'\n"
+        "Example: ./SearchKey KGLOG \"../Debug/testLog/*.log\"\n"
+        "and if The query file name has *, you must need \'\'\n"
+        "Example: ./SearchKey KGLOG ../Debug/testLog/\'*.log\'\n\n"
         "Example: ./SearchKey KGLOG \"../Debug/testLog/*.log\"\n\n"
         "Pattern selection and interpretation::\n"
         "--help\t\tdisplay this help text and exit\n"
@@ -171,11 +173,9 @@ bool KParameterAnalysis::GetFiles(char* pszPath)
     char  szSystem[MAX_PATH_LEN + MAX_PATH_LEN];
     char  szReadBuff[MAX_PATH_LEN];
 #if !WIN32
-    int  nPathLen     = 0;
-    int  nStarPos     = -1;
-    int  nSlashPos    = -1;
-    bool bIsStar      = false;
-    bool bIsDirectory = false;
+    int  nPathLen  = 0;
+    int  nSlashPos = -1;
+    bool bHasSlah  = false;
 #endif
 
     KGLOG_PROCESS_ERROR(pszPath);
@@ -184,30 +184,26 @@ bool KParameterAnalysis::GetFiles(char* pszPath)
     snprintf(szSystem, sizeof(szSystem), "dir /a-d /b /s %s > FilePath.txt", pszPath);
 #else
     nPathLen = strlen(pszPath);
-    KGLOG_PROCESS_ERROR(nPathLen > 0);
 
     for (int i = nPathLen - 1; i >= 0; --i)
     {
-        if (!bIsStar && pszPath[i] == '*')
-        {
-            bIsStar = true;
-            nStarPos = i;
-        }
-
         if (pszPath[i] == '/')
         {
+            bHasSlah = true;
             nSlashPos = i;
             break;
         }
     }
 
-    if (bIsStar && nSlashPos < nStarPos)
+    if (bHasSlah && pszPath[nSlashPos + 1] == '\'')
     {
-        snprintf(szSystem, sizeof(szSystem), "find %.*s -type f -name \"%s\" > FilePath.txt", nPathLen - nSlashPos, pszPath, pszPath + nPathLen - nSlashPos);
+        snprintf(szSystem, sizeof(szSystem), "find %s -type f > FilePath.txt", pszPath);
     }
     else
     {
-        snprintf(szSystem, sizeof(szSystem), "find %s -type f > FilePath.txt", pszPath);
+        snprintf(szSystem, sizeof(szSystem), "find %.*s -type f -name %s> FilePath.txt",
+            nSlashPos + 1, pszPath, pszPath + nSlashPos + 1
+        );
     }
 #endif
     szSystem[sizeof(szSystem) - 1] = '\0';
@@ -218,7 +214,7 @@ bool KParameterAnalysis::GetFiles(char* pszPath)
     fpFile = fopen("FilePath.txt", "r");
     KGLOG_PROCESS_ERROR(fpFile);
 
-    while (fgets(szReadBuff, MAX_PATH_LEN, fpFile))
+    while (fgets(szReadBuff, sizeof(szReadBuff), fpFile))
     {
         nReadBuffLen = strlen(szReadBuff);
 

@@ -62,7 +62,7 @@ after clear size: 0
 after clear capacity: 6
 */
 ```
-clear后，size变为了0，capacity没有变化。
+`clear`后，`size`变为了0，`capacity`没有变化。
 
 测试`std::vector::swap()`
 
@@ -116,9 +116,9 @@ after swap SecondVector capacity: 6
 */
 ```
 
-swap之后，不仅仅是size变化了，capacity也是变化了。
+`swap`之后，不仅仅是`size`变化了，`capacity`也是变化了。
 
-使用swap来替代clear()。
+使用`swap`来替代`clear()`。
 
 ```c
 #include<iostream>
@@ -157,6 +157,6 @@ after clear capacity: 0
 
 ## 4.问题总结
 
-如果想要真正清空vector的内存可以使用swap。交换技巧实现内存释放思想：vector()使用vector的默认构造函数建立临时vector对象，再在该临时对象上调用swap成员，swap调用 之后对象vector占用的空间就等于一个默认构造的对象的大小，临时对象就具有原来对象vector的大小，而该临时对象随即就会被析构，从而其占用的空间也被释放。当然，在程序结束时，vector也会自动析构。
+如果想要真正清空`vector`的内存可以使用`swap`。交换技巧实现内存释放思想：`vector()`使用`vector`的默认构造函数建立临时`vector`对象，再在该临时对象上调用`swap`成员，`swap`调用 之后对象`vector`占用的空间就等于一个默认构造的对象的大小，临时对象就具有原来对象`vector`的大小，而该临时对象随即就会被析构，从而其占用的空间也被释放。当然，在程序结束时，`vector`也会自动析构。
 
-如果只想清空vector的元素使用clear即可。
+如果只想清空`vector`的元素使用`clear`即可。

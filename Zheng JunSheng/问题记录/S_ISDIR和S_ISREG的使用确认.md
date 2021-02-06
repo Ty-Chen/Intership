@@ -1,4 +1,4 @@
-# S_ISDIR和S_ISREG的使用确认
+# `S_ISDIR`和`S_ISREG`的使用确认
 
 ## 1.简介
 
@@ -6,7 +6,7 @@
 
 ## 2.详细分析
 
-struct stat的成员变量：
+`struct sta`t的成员变量：
 
 ```c
 struct stat
@@ -25,7 +25,7 @@ struct stat
 };
 ```
 
-st_mode
+`st_mode`
 
 ```c
 /* Encoding of the file mode.  These are the standard Unix values,
@@ -41,7 +41,7 @@ st_mode
 #define __S_IFIFO       0010000 /* FIFO.  */
 ```
 
-S_ISDIR、S_ISREG等定义
+`S_ISDIR、S_ISREG`等定义
 
 ```c
 #define __S_ISTYPE(mode, mask)  (((mode) & __S_IFMT) == (mask))
@@ -78,4 +78,4 @@ if(stat(pszFilePath, &statBuff) != -1)
 
 ## 4.总结
 
-使用S_ISREG等是先调用该`stat`函数以`struct stat`用有关文件的信息填充对象。然后`st_mode`，可以使用此宏测试此结构的成员的值（整数类型）。
+使用`S_ISREG`等是先调用该`stat`函数以`struct stat`用有关文件的信息填充对象。然后`st_mode`，可以使用此宏测试此结构的成员的值（整数类型）。
